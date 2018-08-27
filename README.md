@@ -15,6 +15,7 @@ The results page is kept current automatically using websockets. In order to red
 * HTML and Javascript are used for the front end
 * Bootstrap templates were used for the navigation, etc.
 * Google developer console (for authentication)
+* Firebase
 
 ### Requirements
 * Django==2.0.7
