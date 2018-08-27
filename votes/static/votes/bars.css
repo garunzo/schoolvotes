@@ -1,0 +1,124 @@
+
+.progressBar {
+  width: 100%;
+  background-color: #ddd;
+  height: 3vw;
+}
+
+.progressResult {
+  width: 1%;
+  height: 3vw;
+  background-color: #4CAF50;
+}
+
+p {
+    font-size: 2vw;
+}
+
+h1 {
+  font-size: 3.5vw;
+}
+
+h2 {
+  font-size: 3vw;
+}
+
+.main {
+    margin-left: 1%;
+    margin-bottom: 100px;
+    height: 100%;
+    margin-top: 20px;
+    font-size: 18px;
+    padding: 0px 10px;
+    font-size: 3vw
+}
+
+/* @media only screen and (max-width: 600px) {
+    .main-sidenav-wrap {display:table;}
+    .main {display:table-footer-group; float: none;}
+    .sidenav {display:table-header-group; float: none;}
+} */
+/*
+.message_button {
+    background-color: white;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.create_channel_button {
+   background-color: white;
+   border: none;
+   color: black;
+   padding: 5px 10px;
+   text-align: center;
+   text-decoration: none;
+   display: inline-block;
+   font-size: 16px;
+   margin: 4px 10px;
+   cursor: pointer;
+}
+
+.create_channel_button:hover {
+   background-color: white;
+}
+
+.channel_textbox {
+   margin: 4px 10px;
+}
+
+.join_channel_button {
+   background-color: #fcf685;
+   border: none;
+   color: black;
+   padding: 5px 10px;
+   text-align: center;
+   text-decoration: none;
+   display: inline-block;
+   font-size: 18px;
+   margin: 4px 10px;
+   cursor: pointer;
+}
+
+.join_channel_button:hover {
+   background-color: white;
+}
+
+.del_button {
+   background-color: #fc8585;
+   border: none;
+   color: black;
+   padding: 2px 4px;
+   text-align: center;
+   text-decoration: none;
+   display: inline-block;
+   font-size: 12px;
+   margin: 4px 2px;
+   cursor: pointer;
+}
+
+div.ex1 {
+    width: 90%;
+    height: 70%;
+    overflow: scroll;
+}
+
+.split-para {
+   display:block;margin:10px;
+}
+.split-para span {
+   display:block;float:right;width:100%;margin-left:10px;
+}
+
+
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+} */

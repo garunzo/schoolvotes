@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Community Votes{% endblock %}
+{% block sidenav %}
+{% endblock %}
+{% block content %}
+  <p>Thanks for offering a suggestion, {{ username }}!</p>
+  <hr>
+  <form action="{% url 'mail' %}" method="post">
+     {% csrf_token %}
+
+ <textarea name="message" rows="10" cols="30" placeholder="Enter message here"></textarea>
+</br>
+ <input type="submit">
+  </form>
+   <hr>
+{% endblock %}

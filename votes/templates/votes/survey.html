@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Community Votes{% endblock %}
+{% block sidenav %}
+{% endblock %}
+{% block content %}
+   <h1>Questions for Survey {{ survey.get_description }}</h1>
+   <hr>
+      <ul>
+       {% for question in questions %}
+       <form action="{% url 'vote' %}" method="POST">
+          {% csrf_token %}
+           <li>
+             <strong><font color="blue">{{ question.text }}</font></strong>
+             <fieldset id="q{{question.id}}">
+             {% for response in question.get_responses %}
+             <input type="radio" value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }}</br>
+                <!-- <button onclick="myFunction()">Click me</button></li> -->
+             {% endfor %}
+             </fieldset>
+           </li>
+         {% endfor %}
+        </ul>
+        <input type="submit" value="Submit Vote">
+
+     </form>
+{% endblock %}

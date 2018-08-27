@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Community Votes{% endblock %}
+{% block sidenav %}
+{% endblock %}
+{% block content %}
+<img src="{{ community.logo.url }}" alt="community logo"  width="150" height="150">
+
+   <h2>Surveys for {{ community.name }}</h2>
+   <hr>
+       {% for survey in surveys %}
+           <li>
+             {{ survey.description }}  <a href="{% url 'survey' survey_id=survey.id %}">Take Survey</a>
+             <a href="{% url 'results' survey_id=survey.id %}">See Results</a>
+           </li>
+         {% endfor %}
+{% endblock %}

@@ -1,0 +1,26 @@
+from django.urls import path, include
+from django.conf.urls import url
+from django.conf import settings
+from django.conf.urls.static import static
+
+from . import views
+from django.contrib.auth import views as auth_views
+
+urlpatterns = [
+    path("", views.index, name="index"),
+    path("index", views.index),
+    path("community/<int:community_id>", views.select_community, name="community"),
+    path("survey/<int:survey_id>", views.select_survey, name="survey"),
+    path("results/<int:survey_id>", views.results, name="results"),
+    path("vote", views.vote, name="vote"),
+    # path('signup/', views.SignUp.as_view(), name='signup'),
+    # path('signup/', views.signup, name='signup'),
+    # path('signout', views.signout, name='signout'),
+    url(r'chat', views.chat, name='chat'),
+    url(r'^room/(?P<room_name>[^/]+)/$', views.room, name='room'),
+    path('test', views.test, name='test'),
+    path('test/<int:id>', views.test, name='test-selection'),
+    path('suggestion', views.suggestion, name='suggestion'),
+    path('mail', views.mail, name='mail'),
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
