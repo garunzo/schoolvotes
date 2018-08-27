@@ -2,9 +2,13 @@ from django.urls import path, include
 from django.conf.urls import url
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic.base import RedirectView
+
 
 from . import views
 from django.contrib.auth import views as auth_views
+
+favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -22,5 +26,7 @@ urlpatterns = [
     path('test/<int:id>', views.test, name='test-selection'),
     path('suggestion', views.suggestion, name='suggestion'),
     path('mail', views.mail, name='mail'),
+    url(r'^favicon\.ico$', favicon_view),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
