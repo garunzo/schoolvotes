@@ -110,14 +110,17 @@ def results(request, survey_id):
         username = request.user.username
         survey = Survey.get_survey_by_id(survey_id)
         community = survey.get_community()
+        response_percents = Survey.get_response_percents(survey_id)
+        print(response_percents)
         context = {
             "username" : username,
             "survey" : survey,
             "community" : community,
             "communities" : Community.get_communities(),
             "is_staff" : is_staff(request.user),
+            "response_percents" : response_percents,
         }
-        return render(request, 'votes/results.html', context)
+        return render(request, 'votes/results.v2.html', context)
     return redirect('login')
 
 # def signout(request):
