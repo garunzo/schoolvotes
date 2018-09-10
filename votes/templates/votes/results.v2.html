@@ -3,42 +3,10 @@
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 
-   function setBar(id, percent) {
-     var elem = document.getElementById(id);
-     elem.style.width = percent + '%';
-   }
-
-   var roomName = 'A';
-   var chatSocket = new WebSocket('ws://' + window.location.host +      '/ws/chat/' + roomName + '/');
-
-   chatSocket.onclose = function(e) {
-       console.error('Chat socket closed unexpectedly');
-   };
-
-   function requestVotes() {
-       var message = "hi";
-       var username = '{{ username }}';
-       var survey_id = '{{ survey.id }}';
-       chatSocket.send(JSON.stringify({
-           'message': message,
-           'username': username,
-           'survey_id': survey_id
-       }));
-   }
+   var id = setTimeout(updateVotes, 200);
+   var id = setTimeout(updateVotes, 500);
 
    function updateVotes() {
-      document.querySelector('demo').innerHTML = message;
-   }
-
-// Instead of having to install redis, etc. I am going to just poll the
-// server.
-// var id = setTimeout(requestVotes, 300);
-// var id = setTimeout(requestVotes, 1000);
-// var id = setInterval(requestVotes, 5000 );
-   var id = setTimeout(updateVotes2, 200);
-   var id = setTimeout(updateVotes2, 500);
-
-   function updateVotes2() {
       var i, response_percent;
       for (i = 0; i < {{ response_percents|length }}; i++) {
          response_percent = {{ response_percents|safe }}[i];
