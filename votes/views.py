@@ -111,7 +111,6 @@ def results(request, survey_id):
         survey = Survey.get_survey_by_id(survey_id)
         community = survey.get_community()
         response_percents = Survey.get_response_percents(survey_id)
-        print(response_percents)
         context = {
             "username" : username,
             "survey" : survey,
