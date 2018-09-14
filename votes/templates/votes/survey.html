@@ -11,7 +11,7 @@
        <form action="{% url 'vote' %}" method="POST">
           {% csrf_token %}
            <li>
-             <strong><font size=50 color="blue">{{ question.text }}</font></strong>
+             <strong><font size="12" color="blue">{{ question.text }}</font></strong>
              <fieldset id="q{{question.id}}">
              {% for response in question.get_responses %}
              <input type="radio" value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }}</br>
