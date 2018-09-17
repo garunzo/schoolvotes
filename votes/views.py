@@ -167,6 +167,7 @@ def suggestion(request):
         context = {
             "username" : request.user.username,
             "is_staff" : is_staff(request.user),
+            "communities" : Community.get_communities(),
         }
         return render(request, 'votes/suggestion.html', context)
     return redirect('account_login')

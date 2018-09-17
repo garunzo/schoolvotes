@@ -1,17 +1,21 @@
 {% extends 'base.html' %}
 
-{% block title %}Community Votes{% endblock %}
+{% block title %}School Votes{% endblock %}
 {% block sidenav %}
 {% endblock %}
 {% block content %}
+<div class="container-fluid">
 <img src="{{ community.logo.url }}" alt="community logo"  width="150" height="150">
 
    <h2>Surveys for {{ community.name }}</h2>
    <hr>
+   <ul>
        {% for survey in surveys %}
            <li>
-             {{ survey.description }}  <a href="{% url 'survey' survey_id=survey.id %}">Take Survey</a>
-             <a href="{% url 'results' survey_id=survey.id %}">See Results</a>
+             {{ survey.description }}  <a class="btn btn-primary" href="{% url 'survey' survey_id=survey.id %}">Take Survey</a>  
+             <a class="btn btn-primary" href="{% url 'results' survey_id=survey.id %}">See Results</a>
            </li>
-         {% endfor %}
+       {% endfor %}
+   </ul>
+</div>
 {% endblock %}

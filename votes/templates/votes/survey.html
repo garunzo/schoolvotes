@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}School Votes{% endblock %}
+{% block title %}School Votes
+{% endblock %}
 {% block sidenav %}
 {% endblock %}
 {% block content %}
+<div class="container-fluid">
    <h1>Questions for Survey {{ survey.get_description }}</h1>
    <hr>
       <ul>
@@ -25,4 +27,5 @@
 
 
      </form>
+</div>
 {% endblock %}

@@ -4,7 +4,7 @@
 <head>
    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="Luca Cotter">
     {% load static %}
@@ -12,11 +12,11 @@
 
     <title>School Votes</title>
 
-       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
    {% load static %}
    {% load socialaccount %}
 
-   <!-- <link rel="stylesheet" href="{% static 'votes/styles.css' %}"/> -->
+   <link rel="stylesheet" href="{% static 'votes/styles.css' %}"/> 
    <title>{% block title %}School Votes{% endblock %}</title>
 
    <!-- Bootstrap core CSS -->
@@ -28,7 +28,6 @@
    {% load static %}
    <link rel="stylesheet" href="{% static 'votes/bars.css' %}"/>
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-
 </head>
 {% block script %}
 {% endblock %}
@@ -70,7 +69,7 @@
            <a class="nav-link" href="{% url 'suggestion' %}">Suggestion</a>
          </li>
          <li class="nav-item dropdown">
-           <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Communities</a>
+           <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Schools</a>
            <div class="dropdown-menu" aria-labelledby="dropdown01">
              {% for community in communities %}
              <a class="dropdown-item" href="{% url 'community' community_id=community.id %}">{{ community.get_name }}</a>
@@ -79,7 +78,7 @@
          </li>
       </ul>
       <div class="form-inline my-2 my-lg-0">
-          <font color="white">{{ username }}</font>
+          <font color="white" class="text-capitalize">{{ username }}</font>
       </div>
       <!-- <form class="form-inline my-2 my-lg-0">
          <input class="form-control mr-sm-2" placeholder="Search" aria-label="Search" type="text">
@@ -88,13 +87,14 @@
      </div>
    </nav>
 
-  <div class="main">
+<div class="main"> 
      <main>
        {% block content %}
        {% endblock %}
      </main>
+</div>
 
-   </div>
+<!--   </div> -->
 
    <!-- <div class="sidenav">
      {% block sidenav %}

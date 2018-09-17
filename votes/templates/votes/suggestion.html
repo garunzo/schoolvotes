@@ -4,14 +4,16 @@
 {% block sidenav %}
 {% endblock %}
 {% block content %}
-  <p>Thanks for offering a suggestion, {{ username }}!</p>
+<div class="container-fluid">
+  Thanks for offering a suggestion, <font class="text-capitalize">{{ username }}</font>!
   <hr>
   <form action="{% url 'mail' %}" method="post">
      {% csrf_token %}
 
- <textarea name="message" rows="10" cols="30" placeholder="Enter message here"></textarea>
+ <textarea name="message" rows="10" cols="30" placeholder="Enter suggestion here"></textarea>
 </br>
- <input type="submit">
+ <input class="btn btn-primary" type="submit">
   </form>
    <hr>
+</div>
 {% endblock %}
