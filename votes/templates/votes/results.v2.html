@@ -22,12 +22,14 @@ document.addEventListener("DOMContentLoaded", function() {
 {% block sidenav %}
 {% endblock %}
 {% block content %}
+<div class="container-fluid">
+
    <h1>Results for {{ survey.get_community.name }} Survey {{survey.description}}</h1>
-   <hr>
 
    {% for question in survey.get_questions %} <!-- get ordered questions -->
    <hr>
-     <h2><strong>{{question.text}}</strong></h2>
+<div class="survey">
+     <strong>{{question.text}}</strong><br/>
      {% for response in question.get_responses %} <!-- get ordered responses -->
          {{response.text}}<br/>
          <div class="progressBar" id="progressBar">
@@ -35,4 +37,6 @@ document.addEventListener("DOMContentLoaded", function() {
          </div>
      {% endfor %}
      {% endfor %}
+</div>
+</div>
 {% endblock %}
