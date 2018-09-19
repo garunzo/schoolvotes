@@ -160,8 +160,8 @@ class Response(models.Model):
     def votes(self):
         return ResponseVote.objects.filter(response=self).count()
 
-    def vote(self, username):
-        vote = ResponseVote(response = self, question = self.question, username = username)
+    def vote(self, username, email):
+        vote = ResponseVote(response = self, question = self.question, username = username, email = email)
         vote.save()
         return True
 
@@ -183,6 +183,7 @@ class ResponseVote(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     response = models.ForeignKey(Response, on_delete=models.CASCADE)
     username = models.CharField(max_length=64)
+    email = models.CharField(max_length=254, null=True, blank=False)
 
     def __str__(self):
-        return f"Survey: {self.response.question.survey.description}, Question Text: {self.response.question.text()}, Response Voted: {self.response.text()}"
+        return f"Survey: {self.response.question.survey.description}, QText: {self.response.question.text()}, Response Voted: {self.response.text()}, Voter Username: {self.username}, Email: {self.email}"

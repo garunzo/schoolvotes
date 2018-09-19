@@ -75,12 +75,13 @@ def select_survey(request, survey_id):
 def vote(request):
     if request.user.is_authenticated and request.method == "POST":
         username = request.user.username
+        email = request.user.email
         keys = list(request.POST.keys())
         keys.remove('csrfmiddlewaretoken')
         for question in keys:
             rid = request.POST[question][1:]
             response = Response.get_response_by_id(rid)
-            response.vote(username)
+            response.vote(username, email)
 
         context = {
             "username" : username,
