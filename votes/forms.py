@@ -1,3 +1,11 @@
+# School Votes / Community votes
+#
+# Author: Luca Cotter
+#
+# Date: August 2018
+#
+# (c) 2018 Copyright, Luca Cotter. All rights reserved.
+#
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User

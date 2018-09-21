@@ -1,3 +1,11 @@
+# School Votes / Community votes
+#
+# Author: Luca Cotter
+#
+# Date: August 2018
+#
+# (c) 2018 Copyright, Luca Cotter. All rights reserved.
+#
 from django.test import TestCase
 
 # Create your tests here.
@@ -61,6 +69,6 @@ class ModelsTestCase(TestCase):
         self.assertTrue(len(questions_s2) == 2)
         responses_22 = questions_s2[1].get_responses()
         self.assertEqual(responses_22[1].text(), "3:00PM")
-        
+
         self.assertEqual(responses_22[0].votes(), 2)
         self.assertEqual(responses_22[1].votes(), 1)

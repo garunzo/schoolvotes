@@ -10,6 +10,15 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
+# School Votes / Community votes
+#
+# Author: Luca Cotter
+#
+# Date: August 2018
+#
+# (c) 2018 Copyright, Luca Cotter. All rights reserved.
+#
+
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)

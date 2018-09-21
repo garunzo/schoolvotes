@@ -1,3 +1,10 @@
+# School Votes / Community votes
+#
+# Author: Luca Cotter
+#
+# Date: August 2018
+#
+
 from django.conf.urls import url
 
 from . import consumers

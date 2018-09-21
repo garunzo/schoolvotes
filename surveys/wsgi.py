@@ -6,6 +6,14 @@ It exposes the WSGI callable as a module-level variable named ``application``.
 For more information on this file, see
 https://docs.djangoproject.com/en/2.0/howto/deployment/wsgi/
 """
+# School Votes / Community votes
+#
+# Author: Luca Cotter
+#
+# Date: August 2018
+#
+# (c) 2018 Copyright, Luca Cotter. All rights reserved.
+#
 
 import os
 

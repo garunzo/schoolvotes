@@ -1,3 +1,11 @@
+# School Votes / Community votes
+#
+# Author: Luca Cotter
+#
+# Date: August 2018
+#
+# (c) 2018 Copyright, Luca Cotter. All rights reserved.
+#
 from django.urls import path, include
 from django.conf.urls import url
 from django.conf import settings
