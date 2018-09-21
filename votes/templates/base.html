@@ -16,7 +16,7 @@
    {% load static %}
    {% load socialaccount %}
 
-   <link rel="stylesheet" href="{% static 'votes/styles.css' %}"/> 
+   <link rel="stylesheet" href="{% static 'votes/styles.css' %}"/>
    <title>{% block title %}School Votes{% endblock %}</title>
 
    <!-- Bootstrap core CSS -->
@@ -87,10 +87,11 @@
      </div>
    </nav>
 
-<div class="main"> 
+<div class="main">
      <main>
        {% block content %}
        {% endblock %}
+       <p>&copy;2018 Luca Cotter. All rights reserved.</p>
      </main>
 </div>
 
