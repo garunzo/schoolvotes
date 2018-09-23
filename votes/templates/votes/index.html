@@ -2,7 +2,7 @@
 {% load socialaccount %}
 
 {% block content %}
-  <h1 class="text-capitalize">Welcome to School Votes, {{ username }}</h1>
+  <strong class="text-capitalize">Welcome to School Votes, {{ username }}</strong>
   <hr>
   {% if message != None %}
   <strong> {{ message }} </strong> </br>
@@ -12,7 +12,7 @@
    <hr>
 <!-- Copyright -->
 <footer class="page-footer blue pt-4 fixed-bottom">
-<div class="footer-copyright text-center py-3 bg-white">Copyright © 2018 Luca Cotter. All rights reserved.
+<div class="footer-copyright text-center py-3 bg-white myfont-scaling-sm">Copyright © 2018 Luca Cotter. All rights reserved.
 </div>
 </footer>
 {% endblock %}
