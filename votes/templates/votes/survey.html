@@ -10,10 +10,20 @@
        <form action="{% url 'vote' %}" method="POST">
           {% csrf_token %}
              <hr>
-             <font color="blue">{{ question.text }}</font>
+             <font color="blue">{{ question.text }}
+                {% if question.get_response_limit > 1 %}
+                (Select up to {{ question.get_response_limit }})
+                {% endif %}
+             </font>
              <fieldset id="q{{question.id}}">
              {% for response in question.get_responses %}
-             <input type="radio" style="height:2vw; width:3vw; vertical-align: middle;" value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }}</br>
+             <input
+             {% if question.get_response_limit > 1 %}
+             type="checkbox"
+             {% else %}
+             type="radio"
+             {% endif %}
+             style="height:2vw; width:3vw; vertical-align: middle;" value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }}</br>
                 <!-- <button onclick="myFunction()">Click me</button></li> -->
              {% endfor %}
              </fieldset>

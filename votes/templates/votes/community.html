@@ -6,11 +6,18 @@
 {% block content %}
 <img src="{{ community.logo.url }}" alt="community logo"  width="150" height="150"><br/>
    <strong>Surveys for {{ community.name }}</strong>
-       {% for survey in surveys %}
+       {% for survey in surveys_list_of_dict %}
          <hr>
 
-             {{ survey.description }} <br/> <a class="btn btn-primary" href="{% url 'survey' survey_id=survey.id %}">Take Survey</a>
-             <a class="btn btn-primary" href="{% url 'results' survey_id=survey.id %}">See Results</a>
+             {{ survey.description }} (Votes: {{ survey.user_votes }} of
+                  {% if survey.max_votes == 0 %}
+                  Unlimited)
+                  {% else %}
+                  {{ survey.max_votes }})
+                  {% endif %}<br/>
+                  <a class="btn btn-primary" href="{% url 'survey' survey_id=survey.id %}">Take Survey</a>
+             <a class="btn btn-primary" href="{% url 'results' survey_id=survey.id %}">See Results</a><br/>
+
        {% endfor %}
    </ul>
 {% endblock %}

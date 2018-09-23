@@ -33,6 +33,7 @@ def index(request):
         # community = Community.get_community(username)
         context = {
             "username" : username,
+            "firstname" : request.user.first_name.title(),
             # "community" : community,
             "communities" : Community.get_communities(),
             "message" : "",
@@ -51,6 +52,7 @@ def about(request):
         # community = Community.get_community(username)
         context = {
             "username" : username,
+            "firstname" : request.user.first_name.title(),
             # "community" : community,
             "communities" : Community.get_communities(),
             "message" : "",
@@ -71,13 +73,26 @@ def about(request):
 def select_community(request, community_id):
     if request.user.is_authenticated:
         username = request.user.username
+        email = request.user.email
         community = Community.get_community_by_id(community_id)
         surveys = community.get_surveys_not_hidden()
+        surveys_list_of_dict = []
+        for survey in surveys:
+            survey_dict = {}
+            survey_dict['id'] = survey.id
+            survey_dict['description'] = survey.get_description()
+            survey_dict['max_votes'] = survey.get_max_votes()
+            survey_dict['user_votes'] = survey.get_user_votes(email)
+            surveys_list_of_dict.append(survey_dict)
+
         context = {
             "username" : username,
+            "email": email,
+            "firstname" : request.user.first_name.title(),
             "community" : community,
             "communities" : Community.get_communities(),
             "surveys" : surveys,
+            "surveys_list_of_dict": surveys_list_of_dict,
             "is_staff" : is_staff(request.user),
         }
         return render(request, 'votes/community.html', context)
@@ -93,6 +108,7 @@ def select_survey(request, survey_id):
         context = {
             "username" : username,
             "community" : community,
+            "firstname" : request.user.first_name.title(),
             "communities" : Community.get_communities(),
             "survey": survey,
             "surveys" : surveys,
@@ -108,26 +124,54 @@ def vote(request):
         email = request.user.email
         keys = list(request.POST.keys())
         keys.remove('csrfmiddlewaretoken')
-        response = False
-        for question in keys:
-            last_question = question
-            rid = request.POST[question][1:]
-            response = Response.get_response_by_id(rid)
-            response.vote(username, email)
 
-        if response:
-            print("Response was true, recording vote")
-            question = response.get_survey()
-            SurveyVoter.update_vote_record(survey=response.get_survey(),
+        # Make sure that the voter can still vote
+        # (i.e. has not exceeded number of allowed votes)
+        response = False
+        print("vote:",keys)
+        if len(keys) > 0:
+            rid = request.POST[keys[0]][1:]
+            response = Response.get_response_by_id(rid)
+            status, vote_count = SurveyVoter.update_vote_record(survey=response.get_survey(),
                                            email=email, username=username)
-            message = "Thank you for voting!"
+            if not status:
+                message = "Sorry, you are not allowed to submit another vote."
         else:
             message = "Sorry, your vote did not get recorded. " +\
                       "This is probably because no response was selected. " +\
-                      "Please vote again."
+                      "Please try to vote again."
+        if status:
+            # verify that the number of votes is correct for all questions
+            submission_error = False
+            for question in keys:
+                qid = question[1:]
+                question_record = Question.get_question_by_id(qid)
+                response_limit = question_record.get_response_limit()
+                responses = request.POST.getlist(question)
+                if len(responses) > response_limit:
+                    if not submission_error:
+                        message = "Submission error: " + \
+                                    question_record.text() + \
+                                   ": too many selections"
+                        submission_error = True
+                    else:
+                        message += ", " + question_record.text() + \
+                                   ": too many selections"
+
+            if not submission_error:
+                for question in keys:
+                    dictionary = request.POST.dict()
+                    for response_code in request.POST.getlist(question):
+                        rid = response_code[1:]
+                        response = Response.get_response_by_id(rid)
+                        print(email, ": voting for response id:",rid)
+                        response.vote(username, email)
+                if response:
+                    message = "Thank you for voting!"
 
         context = {
             "username" : username,
+            "firstname" : request.user.first_name.title(),
             "community" : None,
             "communities" : Community.get_communities(),
             "message" : message,
@@ -142,6 +186,7 @@ def test(request):
         community = Community.get_community(username)
         context = {
             "username" : username,
+            "firstname" : request.user.first_name.title(),
             "community" : community,
             "communities" : Community.get_communities(),
             "message" : "",
@@ -157,6 +202,7 @@ def results(request, survey_id):
         response_percents = Survey.get_response_percents(survey_id)
         context = {
             "username" : username,
+            "firstname" : request.user.first_name.title(),
             "survey" : survey,
             "community" : community,
             "communities" : Community.get_communities(),
@@ -199,6 +245,7 @@ def room(request, room_name):
     context = {
         'room_name_json': mark_safe(json.dumps(room_name)),
         'username' : request.user.username,
+        "firstname" : request.user.first_name.title(),
         "is_staff" : is_staff(request.user),
     }
     return render(request, 'votes/room.html', context)
@@ -210,6 +257,7 @@ def suggestion(request):
     if request.user.is_authenticated:
         context = {
             "username" : request.user.username,
+            "firstname" : request.user.first_name.title(),
             "is_staff" : is_staff(request.user),
             "communities" : Community.get_communities(),
         }
@@ -220,6 +268,7 @@ def mail(request):
     if request.user.is_authenticated and request.method == 'POST':
         context = {
             "username" : request.user.username,
+            "firstname" : request.user.first_name.title(),
             "is_staff" : is_staff(request.user),
             "community" : None,
             "communities" : Community.get_communities(),

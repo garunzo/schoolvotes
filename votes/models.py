@@ -76,7 +76,7 @@ class Survey(models.Model):
     create_date_time = models.DateTimeField(auto_now=False, auto_now_add=True)
     expiration_date_time = models.DateField(default=datetime.date.today)
     hide = models.BooleanField(default=False)
-
+    max_votes = models.IntegerField(default=0)
 
     def __str__(self):
       return f"Survey: {self.description}, Community: {self.community.name}"
@@ -100,6 +100,19 @@ class Survey(models.Model):
 
     def isHidden(self):
         return self.hide
+
+    def get_max_votes(self):
+        return self.max_votes
+
+    def get_user_votes(self, email):
+        survey_voters = SurveyVoter.objects.filter(survey=self, email = email)
+        if len(survey_voters) > 1:
+            print("Inconsistency, more than one surveyvoter record.")
+            return survey_voters[0].get_vote_count()
+        elif len(survey_voters) == 1:
+            return survey_voters[0].get_vote_count()
+        else:
+            return 0
 
     @staticmethod
     def get_survey_by_id(survey_id):
@@ -133,27 +146,41 @@ class SurveyVoter(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
     username = models.CharField(max_length=64)
     email = models.CharField(max_length=254,
-                             blank=False, unique=True)
+                             blank=False)
     vote_count = models.IntegerField(default=1)
 
     def __str__(self):
         return f"Survey: {self.survey}, email: {self.email}, vote count: {self.vote_count}"
 
+    def get_vote_count(self):
+        return self.vote_count
+
     @classmethod
     def update_vote_record(cls, survey, username, email):
         with transaction.atomic():
-            record, created = cls.objects.get_or_create(email = email,
-                            defaults={'survey':survey, 'username':username})
+            survey_voter, created = cls.objects.get_or_create(email = email, survey = survey,
+                            defaults={'username':username})
             if not created:
-                survey_voter = (cls.objects.select_for_update().get(id=record.id))
-                survey_voter.vote_count += 1
-                survey_voter.save()
-        return True
+                # survey_voter = (cls.objects.select_for_update().get(id=record.id))
+                if survey.get_max_votes() == 0:
+                    survey_voter.vote_count += 1
+                    survey_voter.save()
+                    status = True
+                elif survey.get_max_votes() > survey_voter.vote_count:
+                    survey_voter.vote_count += 1
+                    survey_voter.save()
+                    status = True
+                else:
+                    status = False
+            else:
+                status = True
+        return (status, survey_voter.vote_count)
 
 class Question(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
     _rank = models.IntegerField(default=0)
     _text = models.CharField(max_length=80)
+    response_limit = models.IntegerField(default=1)
 
     def __str__(self):
         # return f"Survey: {self.survey.description}, Rank: {self.rank}, Question Text: {self.text}"
@@ -181,6 +208,17 @@ class Question(models.Model):
 
     def get_survey(self):
         return self.survey
+
+    def get_response_limit(self):
+        return self.response_limit
+
+    @staticmethod
+    def get_question_by_id(question_id):
+        try:
+            question = Question.objects.get(pk=question_id)
+        except ObjectDoesNotExist:
+            return None
+        return question
 
 class Response(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)

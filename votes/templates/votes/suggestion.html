@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
 <div class="container-fluid">
-  Thanks for offering a suggestion, <font class="text-capitalize">{{ username }}</font>!
+  Thanks for offering a suggestion, {{ firstname }}!
   <hr>
   <form action="{% url 'mail' %}" method="post">
      {% csrf_token %}
