@@ -135,11 +135,12 @@ class Survey(models.Model):
                 num_votes += response.votes()
             for response in question.get_responses():
                 rid = str(response.id)
+                vote_count = response.votes()
                 if num_votes != 0:
-                    percent = int(response.votes() * 100.0 / num_votes)
+                    percent = int(vote_count * 100.0 / num_votes)
                 else:
                     percent = 0
-                response_counts.append([rid, percent])
+                response_counts.append([rid, percent, vote_count])
         return response_counts
 
 class SurveyVoter(models.Model):
