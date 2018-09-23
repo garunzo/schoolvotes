@@ -65,8 +65,8 @@ h1 {font-size: 20px}
 } */
 
 .mymain {
-    margin-left: 1%;
-    margin-right: 1%;
+    margin-left: 5px;
+    margin-right: 5px;
     margin-top: 20px;
     margin-bottom: 100px;
     height: 100%;
@@ -83,20 +83,24 @@ h1 {font-size: 24px;}
 
 @media (min-width: 450px) {
 .mymain {
-    margin-left: 1%;
-    margin-right: 1%;
+    margin-left: 5px;
+    margin-right: 5px;
     margin-top: 20px;
     margin-bottom: 100px;
     height: 100%;
     font-size: 36px;
     padding: 0px 10px;
 }
+ul {
+   font-size: 42px;
+}
 
-h1.mymain {
+h1 {
    font-size: 76px;
    line-height: 1.2;
 }
 
+}
 
 .cartlist {
   list-style-type: none;

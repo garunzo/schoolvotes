@@ -7,10 +7,10 @@
 <img src="{{ community.logo.url }}" alt="community logo"  width="150" height="150"><br/>
    <strong>Surveys for {{ community.name }}</strong>
    <hr>
-   <ul>
+   <ul class="mymain">
        {% for survey in surveys %}
            <li>
-             {{ survey.description }}  <br/> <a class="btn btn-primary" href="{% url 'survey' survey_id=survey.id %}">Take Survey</a> 
+             {{ survey.description }}  <br/> <a class="btn btn-primary" href="{% url 'survey' survey_id=survey.id %}">Take Survey</a>
              <a class="btn btn-primary" href="{% url 'results' survey_id=survey.id %}">See Results</a>
            </li>
        {% endfor %}
