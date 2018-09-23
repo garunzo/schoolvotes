@@ -10,7 +10,7 @@
    <ul>
        {% for survey in surveys %}
            <li>
-             {{ survey.description }}  <a class="btn btn-primary" href="{% url 'survey' survey_id=survey.id %}">Take Survey</a>
+             {{ survey.description }}  <br/> <a class="btn btn-primary" href="{% url 'survey' survey_id=survey.id %}">Take Survey</a> 
              <a class="btn btn-primary" href="{% url 'results' survey_id=survey.id %}">See Results</a>
            </li>
        {% endfor %}
