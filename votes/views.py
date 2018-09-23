@@ -96,7 +96,7 @@ def select_community(request, community_id):
             "is_staff" : is_staff(request.user),
         }
         return render(request, 'votes/community.html', context)
-    return redirect('login')
+    return redirect('account_login')
 
 def select_survey(request, survey_id):
     if request.user.is_authenticated:
@@ -116,7 +116,7 @@ def select_survey(request, survey_id):
             "is_staff" : is_staff(request.user),
         }
         return render(request, 'votes/survey.html', context)
-    return redirect('login')
+    return redirect('account_login')
 
 def vote(request):
     if request.user.is_authenticated and request.method == "POST":
@@ -182,7 +182,7 @@ def vote(request):
             "is_staff" : is_staff(request.user),
         }
         return render(request, 'votes/index.html', context)
-    return redirect('index')
+    return redirect('account_login')
 
 def test(request):
     if request.user.is_authenticated:
@@ -214,7 +214,7 @@ def results(request, survey_id):
             "response_percents" : response_percents,
         }
         return render(request, 'votes/results.v2.html', context)
-    return redirect('login')
+    return redirect('account_login')
 
 # def signout(request):
 #     if request.user.is_authenticated:
