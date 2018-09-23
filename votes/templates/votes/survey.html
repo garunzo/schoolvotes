@@ -6,22 +6,18 @@
 {% endblock %}
 {% block content %}
    <strong>Questions for Survey {{ survey.get_description }}</strong>
-   <hr>
-      <ul>
        {% for question in questions %}
        <form action="{% url 'vote' %}" method="POST">
           {% csrf_token %}
-           <li>
+             <hr>
              <font color="blue">{{ question.text }}</font>
              <fieldset id="q{{question.id}}">
              {% for response in question.get_responses %}
-             <input type="radio" style="height:3vw; width:3vw; vertical-align: middle;" value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }}</br>
+             <input type="radio" style="height:2vw; width:3vw; vertical-align: middle;" value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }}</br>
                 <!-- <button onclick="myFunction()">Click me</button></li> -->
              {% endfor %}
              </fieldset>
-           </li>
          {% endfor %}
-        </ul>
         <input class="btn btn-primary" type="submit" value="Submit Votes">
 
 

@@ -65,9 +65,9 @@ h1 {font-size: 20px}
 } */
 
 .mymain {
-    margin-left: 5px;
+    margin-left: 10px;
     margin-right: 5px;
-    margin-top: 20px;
+    margin-top: 25px;
     margin-bottom: 100px;
     height: 100%;
     font-size: 24px;
@@ -81,14 +81,18 @@ h1.mymain {
 
 h1 {font-size: 24px;}
 
-@media (min-width: 450px) {
+.myfont-scaling-med {
+   font-size: 24px;
+}
+
+@media (min-width: 767px) {
 .mymain {
-    margin-left: 5px;
+    margin-left: 10px;
     margin-right: 5px;
-    margin-top: 20px;
+    margin-top: 25px;
     margin-bottom: 100px;
     height: 100%;
-    font-size: 36px;
+    font-size: 28px;
     padding: 0px 10px;
 }
 ul {
@@ -100,7 +104,15 @@ h1 {
    line-height: 1.2;
 }
 
+.myfont-scaling-med {
+   font-size: 28px;
 }
+
+
+}
+
+
+
 
 .cartlist {
   list-style-type: none;

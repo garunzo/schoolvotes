@@ -38,7 +38,7 @@
    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #4057B6;">
       <!-- <svg class="d-block" width="36" height="36" viewBox="0 0 612 612" xmlns="http://www.w3.org/2000/svg" focusable="false">\ -->
      <!-- <a class="navbar-brand" href="#">School Votes</a> -->
-    <a class="navbar-brand" href="#"><span class="mb-0 h1">School Votes</span></a>
+    <a class="navbar-brand" href="#"><span class="mb-0 h1"><span class="myfont-scaling-med">School Votes</span></span></a>
      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
      </button>
@@ -48,53 +48,53 @@
 
          <!-- About Button -->
          <li class="nav-item active">
-           <a class="nav-link" href="{% url 'about' %}">About <span class="sr-only">(current)</span></a>
+           <a class="nav-link" href="{% url 'about' %}"><span class="myfont-scaling-med">About</span><span class="sr-only">(current)</span></a>
          </li>
 
          <!-- Home Button -->
          <li class="nav-item active">
-           <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
+           <a class="nav-link" href="{% url 'index' %}"><span class="myfont-scaling-med">Home </sapn><span class="sr-only">(current)</span></a>
          </li>
 
          {% if user.is_authenticated %}
             <li class="nav-item dropdown active">
-              <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Schools</a>
+              <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="myfont-scaling-med">Schools</span></a>
               <div class="dropdown-menu" aria-labelledby="dropdown01">
                 {% for community in communities %}
-                <a class="dropdown-item" href="{% url 'community' community_id=community.id %}">{{ community.get_name }}</a>
+                <a class="dropdown-item" href="{% url 'community' community_id=community.id %}"><span class="myfont-scaling-med">{{ community.get_name }}</span></a>
                 {% endfor %}
               </div>
             </li>
 
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'suggestion' %}">Suggestion</a>
+              <a class="nav-link" href="{% url 'suggestion' %}"><span class="myfont-scaling-med">Suggestion </span></a>
             </li>
 
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
+              <a class="nav-link" href="{% url 'account_logout' %}"><span class="myfont-scaling-med">Logout </span></a>
             </li>
 
          {% else %}
             <!-- <li>
                <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
             </li> -->
+            <!-- <li>
+               <a class="nav-link" href="{% url 'account_login' %}"><span class="myfont-scaling-med">Sign In</span></a>
+            </li> -->
             <li>
-               <a class="nav-link" href="{% url 'account_login' %}">Log In </a>
-            </li>
-            <li>
-               <a class="nav-link" href="{% provider_login_url 'google' %}">Google Log In</a>
+               <a class="nav-link" href="{% provider_login_url 'google' %}"><span class="myfont-scaling-med">Sign In </span></a>
             </li>
          {% endif %}
          {% if is_staff %}
          <li class="nav-item">
-           <a class="nav-link" href="/admin">Admin</a>
+           <a class="nav-link" href="/admin"><span class="myfont-scaling-med">Admin</span></a>
          </li>
          {% endif %}
 
 
       </ul>
       <div class="form-inline my-2 my-lg-0 mb-0 h1">
-          <font color="white" class="text-capitalize">{{ username }}</font>
+          <font color="white" class="text-capitalize"><span class="myfont-scaling-med">{{ username }}</span></font>
       </div>
       <!-- <form class="form-inline my-2 my-lg-0">
          <input class="form-control mr-sm-2" placeholder="Search" aria-label="Search" type="text">
