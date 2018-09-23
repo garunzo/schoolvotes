@@ -1,21 +1,7 @@
 {% extends 'base.html' %}
 {% load socialaccount %}
 
-
-{% block title %}Community Votes{% endblock %}
-{% block sidenav %}
-   <strong>Communities</strong>
-   {% if user.is_authenticated %}
-       <a href="{% url 'account_logout' %}">Logout</a>
-    {% endif %}
-
-    {% for community in communities %}
-     <a href="{% url 'community' community_id=community.id %}">{{ community.get_name }}</a>
-    {% endfor %}
-
-{% endblock %}
 {% block content %}
-<div class="mymain">
   <h1 class="text-capitalize">Welcome to School Votes, {{ username }}</h1>
   <hr>
   {% if message != None %}
@@ -24,7 +10,6 @@
   {% endif %}
    Select a school in navigation bar.
    <hr>
-</div>
 <!-- Copyright -->
 <footer class="page-footer blue pt-4 fixed-bottom">
 <div class="footer-copyright text-center py-3">© 2018 Copyright, Luca Cotter. All rights reserved.
