@@ -174,8 +174,18 @@ class SurveyVoter(models.Model):
                 else:
                     status = False
             else:
+                # No voting had occurred, so okay to vote
                 status = True
         return (status, survey_voter.vote_count)
+
+    @classmethod
+    def decr_vote_record(cls, survey, username, email):
+        with transaction.atomic():
+            survey_voter = cls.objects.get(email = email, survey = survey)
+            survey_voter.vote_count -= 1
+            survey_voter.save()
+            status = True
+        return status
 
 class Question(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)

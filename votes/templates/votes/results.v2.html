@@ -22,13 +22,12 @@ document.addEventListener("DOMContentLoaded", function() {
 {% block sidenav %}
 {% endblock %}
 {% block content %}
-<div class="container-fluid">
+<!-- <div class="container-fluid"> -->
 
    <strong>Results for {{ survey.get_community.name }} Survey {{survey.description}}</strong>
 
    {% for question in survey.get_questions %} <!-- get ordered questions -->
    <hr>
-<div class="survey">
      <strong>{{question.text}}</strong><br/>
      {% for response in question.get_responses %} <!-- get ordered responses -->
          {{response.text}} ({{response.votes}})<br/>
@@ -37,6 +36,4 @@ document.addEventListener("DOMContentLoaded", function() {
          </div>
      {% endfor %}
      {% endfor %}
-</div>
-</div>
 {% endblock %}

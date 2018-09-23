@@ -128,11 +128,11 @@ def vote(request):
         # Make sure that the voter can still vote
         # (i.e. has not exceeded number of allowed votes)
         response = False
-        print("vote:",keys)
         if len(keys) > 0:
             rid = request.POST[keys[0]][1:]
             response = Response.get_response_by_id(rid)
-            status, vote_count = SurveyVoter.update_vote_record(survey=response.get_survey(),
+            survey = response.get_survey()
+            status, vote_count = SurveyVoter.update_vote_record(survey= survey,
                                            email=email, username=username)
             if not status:
                 message = "Sorry, you are not allowed to submit another vote."
@@ -140,6 +140,7 @@ def vote(request):
             message = "Sorry, your vote did not get recorded. " +\
                       "This is probably because no response was selected. " +\
                       "Please try to vote again."
+
         if status:
             # verify that the number of votes is correct for all questions
             submission_error = False
@@ -168,6 +169,9 @@ def vote(request):
                         response.vote(username, email)
                 if response:
                     message = "Thank you for voting!"
+            else:
+                SurveyVoter.decr_vote_record(survey=survey, username=username,\
+                                             email=email)
 
         context = {
             "username" : username,

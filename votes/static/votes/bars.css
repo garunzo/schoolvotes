@@ -11,6 +11,20 @@
   background-color: #4CAF50;
 }
 
+@media (min-width: 367px) {
+   .progressBar {
+     width: 100%;
+     background-color: #ddd;
+     height: 2vw;
+   }
+
+   .progressResult {
+     width: 1%;
+     height: 2vw;
+     background-color: #4CAF50;
+   }
+}
+
 p {
     font-size: 2vw;
 }
