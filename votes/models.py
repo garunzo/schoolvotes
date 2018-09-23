@@ -13,6 +13,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
+from operator import itemgetter
 import datetime
 
 
@@ -200,6 +201,18 @@ class Question(models.Model):
 
     def get_responses(self):
         responses = Response.objects.filter(question=self).order_by('_rank')
+        return responses
+
+    def get_responses_by_votes(self):
+        responses = Response.objects.filter(question=self).order_by('_rank')
+        response_list = []
+        for response in responses:
+            votes = response.votes()
+            response_list.append([response, votes])
+        response_list = sorted(response_list, key=itemgetter(1), reverse=True)
+        responses = []
+        for response in response_list:
+            responses.append(response[0])
         return responses
 
     def rank(self):

@@ -18,6 +18,7 @@ from django.contrib.auth import logout, authenticate, login
 from .models import Community, Survey, Question, Response, ResponseVote, SurveyVoter
 from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
+from operator import itemgetter
 import json
 import os
 
@@ -225,7 +226,7 @@ def results(request, survey_id):
 #             "is_staff" : is_staff(request.user),
 #         }
 #         return render(request, 'votes/logout.html', context)
-#     return redirect('login')
+#     return redirect('account_login')
 
 def signup(request):
     if request.method == 'POST':
@@ -236,7 +237,7 @@ def signup(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('login')
+            return redirect('account_login')
     else:
         form = SignUpForm()
     return render(request, 'votes/signup.html', {'form': form})
@@ -289,4 +290,4 @@ def mail(request):
         send_mail(subject, message, from_mail, to, fail_silently=False,
                   auth_user = auth_user, auth_password=password)
         return render(request, 'votes/index.html', context)
-    return redirect('login')
+    return redirect('account_login')
