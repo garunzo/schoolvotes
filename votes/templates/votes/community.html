@@ -4,18 +4,15 @@
 {% block sidenav %}
 {% endblock %}
 {% block content %}
-<div class="container-fluid">
-<img src="{{ community.logo.url }}" alt="community logo"  width="150" height="150">
-
-   <h2>Surveys for {{ community.name }}</h2>
+<img src="{{ community.logo.url }}" alt="community logo"  width="150" height="150"><br/>
+   <strong>Surveys for {{ community.name }}</strong>
    <hr>
    <ul>
        {% for survey in surveys %}
            <li>
-             {{ survey.description }}  <a class="btn btn-primary" href="{% url 'survey' survey_id=survey.id %}">Take Survey</a>  
+             {{ survey.description }}  <a class="btn btn-primary" href="{% url 'survey' survey_id=survey.id %}">Take Survey</a>
              <a class="btn btn-primary" href="{% url 'results' survey_id=survey.id %}">See Results</a>
            </li>
        {% endfor %}
    </ul>
-</div>
 {% endblock %}

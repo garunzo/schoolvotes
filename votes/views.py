@@ -45,6 +45,28 @@ def index(request):
         #return HttpResponse("You need to login")
         return redirect('account_login')
 
+def about(request):
+    if request.user.is_authenticated:
+        username = request.user.username
+        # community = Community.get_community(username)
+        context = {
+            "username" : username,
+            # "community" : community,
+            "communities" : Community.get_communities(),
+            "message" : "",
+            "is_staff" : is_staff(request.user),
+        }
+        # if community is None:
+        #     return render(request, 'votes/community.html', context)
+        return render(request, 'votes/about.html', context)
+    else:
+        context = {
+            "username" : "",
+            "communities" : Community.get_communities(),
+            "message" : "",
+            "is_staff" : False,
+        }
+        return render(request, 'votes/about.html', context)
 
 def select_community(request, community_id):
     if request.user.is_authenticated:

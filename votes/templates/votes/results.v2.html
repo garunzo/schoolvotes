@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
 {% block content %}
 <div class="container-fluid">
 
-   <h1>Results for {{ survey.get_community.name }} Survey {{survey.description}}</h1>
+   <strong>Results for {{ survey.get_community.name }} Survey {{survey.description}}</strong>
 
    {% for question in survey.get_questions %} <!-- get ordered questions -->
    <hr>

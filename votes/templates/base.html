@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-   <meta charset="utf-8">
+   <!-- <meta charset="utf-8"> -->
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="Luca Cotter">
@@ -12,11 +12,12 @@
 
     <title>School Votes</title>
 
+    <link rel="stylesheet" href="{% static 'votes/styles.css' %}"/>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
    {% load static %}
    {% load socialaccount %}
 
-   <link rel="stylesheet" href="{% static 'votes/styles.css' %}"/>
    <title>{% block title %}School Votes{% endblock %}</title>
 
    <!-- Bootstrap core CSS -->
@@ -41,41 +42,53 @@
 
      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
+
+         <!-- About Button -->
+         <li class="nav-item active">
+           <a class="nav-link" href="{% url 'about' %}">About <span class="sr-only">(current)</span></a>
+         </li>
+
+         <!-- Home Button -->
          <li class="nav-item active">
            <a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
          </li>
-         {% if user.is_authenticated %}
-         <li class="nav-item">
-           <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
-         </li>
-         {% else %}
 
-         <li>
-            <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
-         </li>
-         <li>
-            <a class="nav-link" href="{% url 'account_login' %}">Log In </a>
-         </li>
-         <li>
-            <a class="nav-link" href="{% provider_login_url 'google' %}">Google Log In</a>
-         </li>
+         {% if user.is_authenticated %}
+            <li class="nav-item dropdown active">
+              <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Schools</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown01">
+                {% for community in communities %}
+                <a class="dropdown-item" href="{% url 'community' community_id=community.id %}">{{ community.get_name }}</a>
+                {% endfor %}
+              </div>
+            </li>
+
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'suggestion' %}">Suggestion</a>
+            </li>
+
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
+            </li>
+
+         {% else %}
+            <!-- <li>
+               <a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a>
+            </li> -->
+            <li>
+               <a class="nav-link" href="{% url 'account_login' %}">Log In </a>
+            </li>
+            <li>
+               <a class="nav-link" href="{% provider_login_url 'google' %}">Google Log In</a>
+            </li>
          {% endif %}
          {% if is_staff %}
          <li class="nav-item">
            <a class="nav-link" href="/admin">Admin</a>
          </li>
          {% endif %}
-         <li class="nav-item">
-           <a class="nav-link" href="{% url 'suggestion' %}">Suggestion</a>
-         </li>
-         <li class="nav-item dropdown">
-           <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Schools</a>
-           <div class="dropdown-menu" aria-labelledby="dropdown01">
-             {% for community in communities %}
-             <a class="dropdown-item" href="{% url 'community' community_id=community.id %}">{{ community.get_name }}</a>
-             {% endfor %}
-           </div>
-         </li>
+
+
       </ul>
       <div class="form-inline my-2 my-lg-0">
           <font color="white" class="text-capitalize">{{ username }}</font>
@@ -86,29 +99,12 @@
       </form> -->
      </div>
    </nav>
-
-<div class="main">
-     <main>
-       {% block content %}
-       {% endblock %}
-     </main>
-</div>
-<!-- Copyright -->
-<footer class="page-footer blue pt-4 fixed-bottom">
-<div class="footer-copyright text-center py-3">© 2018 Copyright, Luca Cotter. All rights reserved.
-</div>
-</footer>
-
-<!-- Copyright -->
-
-<!--   </div> -->
-
-   <!-- <div class="sidenav">
-     {% block sidenav %}
-     {% endblock %}
-
-   </div> -->
-</div>
+   <main>
+      <div class="mymain">
+             {% block content %}
+             {% endblock %}
+      </div>
+   </main>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->

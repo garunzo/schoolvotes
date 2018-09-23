@@ -5,9 +5,7 @@
 {% block sidenav %}
 {% endblock %}
 {% block content %}
-<div class="container-fluid">
-<div class="survey">
-   <h1>Questions for Survey {{ survey.get_description }}</h1>
+   <strong>Questions for Survey {{ survey.get_description }}</strong>
    <hr>
       <ul>
        {% for question in questions %}
@@ -28,6 +26,4 @@
 
 
      </form>
-</div>
-</div>
 {% endblock %}

@@ -21,6 +21,8 @@ favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
 urlpatterns = [
     path("", views.index, name="index"),
     path("index", views.index),
+    path("about", views.about, name="about"),
+
     path("community/<int:community_id>", views.select_community, name="community"),
     path("survey/<int:survey_id>", views.select_survey, name="survey"),
     path("results/<int:survey_id>", views.results, name="results"),

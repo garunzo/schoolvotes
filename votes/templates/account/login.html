@@ -1,25 +1,32 @@
 {% extends "base.html" %}
 
-{% load i18n %}
+<!-- {% load i18n %} -->
 {% load account socialaccount %}
 
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
+<div class="mymain">
+<h2>{% trans "Sign in" %}</h2>
 
-<h2>{% trans "Login" %}</h2>
 
-
-<p>Please login with your <a href="{% provider_login_url 'google' %}">school google account</a>.
+Please sign in with your school google account:<br/>
+<a href="{% provider_login_url 'google' %}" class="btn btn-primary">Sign in</a>
+<br/> <br/>
+Example:
 <br/>
-smmk12 Email Example:
-<br/>
-John Henry Smith, ID: 123456
+If your name is "John Henry Smith" and your ID is: 123456, then
 <br/>
 Email: jhs@smmk12.org
 <br/>
 Password: 123456
+</div>
 
+<!-- Copyright -->
+<footer class="page-footer blue pt-4 fixed-bottom">
+<div class="footer-copyright text-center py-3">© 2018 Copyright, Luca Cotter. All rights reserved.
+</div>
+</footer>
    <!-- Or, <a href="{{ signup_url }}">sign up</a>
 for a Community Votes account and sign in below:
  -->
