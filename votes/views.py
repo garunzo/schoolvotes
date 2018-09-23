@@ -15,7 +15,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout, authenticate, login
-from .models import Community, Survey, Question, Response, ResponseVote
+from .models import Community, Survey, Question, Response, ResponseVote, SurveyVoter
 from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
 import json
@@ -108,16 +108,29 @@ def vote(request):
         email = request.user.email
         keys = list(request.POST.keys())
         keys.remove('csrfmiddlewaretoken')
+        response = False
         for question in keys:
+            last_question = question
             rid = request.POST[question][1:]
             response = Response.get_response_by_id(rid)
             response.vote(username, email)
+
+        if response:
+            print("Response was true, recording vote")
+            question = response.get_survey()
+            SurveyVoter.update_vote_record(survey=response.get_survey(),
+                                           email=email, username=username)
+            message = "Thank you for voting!"
+        else:
+            message = "Sorry, your vote did not get recorded. " +\
+                      "This is probably because no response was selected. " +\
+                      "Please vote again."
 
         context = {
             "username" : username,
             "community" : None,
             "communities" : Community.get_communities(),
-            "message" : "Thank you for voting!",
+            "message" : message,
             "is_staff" : is_staff(request.user),
         }
         return render(request, 'votes/index.html', context)

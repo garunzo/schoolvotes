@@ -12,6 +12,7 @@ from django.db import models
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
 import datetime
 
 
@@ -128,6 +129,27 @@ class Survey(models.Model):
                 response_counts.append([rid, percent])
         return response_counts
 
+class SurveyVoter(models.Model):
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+    username = models.CharField(max_length=64)
+    email = models.CharField(max_length=254,
+                             blank=False, unique=True)
+    vote_count = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"Survey: {self.survey}, email: {self.email}, vote count: {self.vote_count}"
+
+    @classmethod
+    def update_vote_record(cls, survey, username, email):
+        with transaction.atomic():
+            record, created = cls.objects.get_or_create(email = email,
+                            defaults={'survey':survey, 'username':username})
+            if not created:
+                survey_voter = (cls.objects.select_for_update().get(id=record.id))
+                survey_voter.vote_count += 1
+                survey_voter.save()
+        return True
+
 class Question(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
     _rank = models.IntegerField(default=0)
@@ -157,6 +179,9 @@ class Question(models.Model):
         response.save()
         return response
 
+    def get_survey(self):
+        return self.survey
+
 class Response(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     _rank = models.IntegerField(default = 0)
@@ -178,6 +203,9 @@ class Response(models.Model):
 
     def text(self):
         return self._text
+
+    def get_survey(self):
+        return self.question.get_survey()
 
     @staticmethod
     def get_response_by_id(response_id):
