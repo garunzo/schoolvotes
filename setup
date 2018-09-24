@@ -1,9 +1,0 @@
-sudo yum update -y
-sudo yum install -y python36
-sudo yum install -y git
-sudo yum install -y gcc
-sudo yum install -y python36-devel
-# Set up virtual environment
-python3 -m venv ~/.virtualenvs/votes_prod
-# Activate the virtual environment
-source ~/.virtualenvs/votes_prod/bin/activate
