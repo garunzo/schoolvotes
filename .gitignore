@@ -8,6 +8,8 @@ __pycache__/
 
 # Database
 db.sqlite3
+backup_db
+migrations
 
 # Distribution / packaging
 .Python
