@@ -47,17 +47,17 @@
       <ul class="navbar-nav mr-auto">
 
          <!-- About Button -->
-         <li class="nav-item active">
+         <li class="nav-item inactive">
            <a class="nav-link" href="{% url 'about' %}"><span class="myfont-scaling-med">About</span><span class="sr-only">(current)</span></a>
          </li>
 
          <!-- Home Button -->
-         <li class="nav-item active">
+         <li class="nav-item inactive">
            <a class="nav-link" href="{% url 'index' %}"><span class="myfont-scaling-med">Home </sapn><span class="sr-only">(current)</span></a>
          </li>
 
          {% if user.is_authenticated %}
-            <li class="nav-item dropdown active">
+            <li class="nav-item dropdown inactive">
               <a class="nav-link dropdown-toggle" href="" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="myfont-scaling-med">Schools</span></a>
               <div class="dropdown-menu" aria-labelledby="dropdown01">
                 {% for community in communities %}
@@ -66,12 +66,12 @@
               </div>
             </li>
 
-            <li class="nav-item active">
+            <li class="nav-item inactive">
               <a class="nav-link" href="{% url 'suggestion' %}"><span class="myfont-scaling-med">Suggestion </span></a>
             </li>
 
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'account_logout' %}"><span class="myfont-scaling-med">Logout </span></a>
+            <li class="nav-item inactive">
+              <a class="nav-link" href="{% url 'account_logout' %}"><span class="myfont-scaling-med">Sign Out </span></a>
             </li>
 
          {% else %}
@@ -82,12 +82,12 @@
                <a class="nav-link" href="{% url 'account_login' %}"><span class="myfont-scaling-med">Sign In</span></a>
             </li> -->
             <li>
-               <a class="nav-link" href="{% provider_login_url 'google' %}"><span class="myfont-scaling-med">Sign In </span></a>
+               <a class="nav-link inactive" href="{% provider_login_url 'google' %}"><span class="myfont-scaling-med inactive">Sign In </span></a>
             </li>
          {% endif %}
          {% if is_staff %}
          <li class="nav-item">
-           <a class="nav-link" href="/admin"><span class="myfont-scaling-med">Admin</span></a>
+           <a class="nav-link inactive" href="/admin"><span class="myfont-scaling-med">Admin</span></a>
          </li>
          {% endif %}
 

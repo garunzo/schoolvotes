@@ -14,6 +14,8 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from operator import itemgetter
+from django.utils import timezone
+
 import datetime
 
 
@@ -150,9 +152,18 @@ class SurveyVoter(models.Model):
     email = models.CharField(max_length=254,
                              blank=False)
     vote_count = models.IntegerField(default=1)
+    created     = models.DateTimeField(editable=False)
+    modified    = models.DateTimeField()
 
     def __str__(self):
         return f"Survey: {self.survey}, email: {self.email}, vote count: {self.vote_count}"
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = timezone.now()
+        self.modified = timezone.now()
+        return super(SurveyVoter, self).save(*args, **kwargs)
 
     def get_vote_count(self):
         return self.vote_count
