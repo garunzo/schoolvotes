@@ -1,0 +1,15 @@
+#!/bin/csh
+sudo yum install -y python36
+sudo yum install -y git
+sudo yum install -y gcc
+sudo yum install -y python36-devel
+sudo yum install -y nginx
+sudo service nginx start
+# Set up virtual environment
+python3 -m venv ~/.virtualenvs/votes_prod
+# Activate the virtual environment
+source ~/.virtualenvs/votes_prod/bin/activate
+chmod o-w ~/.bash_profile 
+chmod g-w ~/.bash_profile 
+
+runserver 0.0.0.0:8000 &> django.log
