@@ -166,7 +166,6 @@ def vote(request):
                     for response_code in request.POST.getlist(question):
                         rid = response_code[1:]
                         response = Response.get_response_by_id(rid)
-                        print(email, ": voting for response id:",rid)
                         response.vote(username, email)
                 if response:
                     message = "Thank you for voting!"
@@ -200,21 +199,34 @@ def test(request):
     return render(request, 'votes/test.html', context)
 
 def results(request, survey_id):
-    if request.user.is_authenticated:
-        username = request.user.username
+    if request.user.is_authenticated or TEST:
+        if TEST:
+            username = "Luca"
+            firstname = "Luca"
+        else:
+            username = request.user.username
+            firstname = request.user.first_name.title()
+
         survey = Survey.get_survey_by_id(survey_id)
-        community = survey.get_community()
-        response_percents = Survey.get_response_percents(survey_id)
-        context = {
-            "username" : username,
-            "firstname" : request.user.first_name.title(),
-            "survey" : survey,
-            "community" : community,
-            "communities" : Community.get_communities(),
-            "is_staff" : is_staff(request.user),
-            "response_percents" : response_percents,
-        }
-        return render(request, 'votes/results.v2.html', context)
+
+        if survey != None:
+            response_percents = Survey.get_response_percents(survey_id)
+            context = {
+                "username" : username,
+                "firstname" : firstname,
+                "survey" : survey,
+                "communities" : Community.get_communities(),
+                "is_staff" : is_staff(request.user),
+                "response_percents" : response_percents,
+            }
+            return render(request, 'votes/results.v2.html', context)
+        else:
+            context = {
+                "username" : username,
+                "firstname" : firstname,
+                "message" : "Survey not found",
+            }
+            return render(request, 'votes/index.html')
     return redirect('account_login')
 
 # def signout(request):

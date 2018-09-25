@@ -18,6 +18,44 @@ from django.utils import timezone
 
 import datetime
 
+import time
+
+class MWT(object):
+    """Memoize With Timeout"""
+    _caches = {}
+    _timeouts = {}
+
+    def __init__(self,timeout=2):
+        self.timeout = timeout
+
+    def collect(self):
+        """Clear cache of results which have timed out"""
+        for func in self._caches:
+            cache = {}
+            for key in self._caches[func]:
+                if (time.time() - self._caches[func][key][1]) < self._timeouts[func]:
+                    cache[key] = self._caches[func][key]
+            self._caches[func] = cache
+
+    def __call__(self, f):
+        self.cache = self._caches[f] = {}
+        self._timeouts[f] = self.timeout
+
+        def func(*args, **kwargs):
+            kw = sorted(kwargs.items())
+            key = (args, tuple(kw))
+            try:
+                v = self.cache[key]
+                # print("cache")
+                if (time.time() - v[1]) > self.timeout:
+                    raise KeyError
+            except KeyError:
+                # print("new")
+                v = self.cache[key] = f(*args,**kwargs),time.time()
+            return v[0]
+        func.func_name = f.__name__
+
+        return func
 
 # Create your models here.
 class Community(models.Model):
@@ -39,6 +77,7 @@ class Community(models.Model):
         return Survey.objects.filter(community=self, hide=False).order_by('create_date_time')
 
     @staticmethod
+    @MWT(60)
     def get_community_by_id(community_id):
         try:
             community = Community.objects.get(pk=community_id)
@@ -50,6 +89,7 @@ class Community(models.Model):
         return self.name
 
     @staticmethod
+    @MWT(60)
     def get_community(username):
         try:
             community = CommunityUser.objects.get(username=username)
@@ -58,6 +98,7 @@ class Community(models.Model):
         return community
 
     @staticmethod
+    @MWT(60)
     def get_communities():
         return Community.objects.all()
 
@@ -118,6 +159,7 @@ class Survey(models.Model):
             return 0
 
     @staticmethod
+    @MWT(60)
     def get_survey_by_id(survey_id):
         try:
             survey = Survey.objects.get(pk=survey_id)
@@ -126,6 +168,7 @@ class Survey(models.Model):
         return survey
 
     @staticmethod
+    @MWT(60)
     def get_response_percents(survey_id):
         try:
             survey = Survey.objects.get(pk=survey_id)
@@ -248,6 +291,7 @@ class Question(models.Model):
         return self.response_limit
 
     @staticmethod
+    @MWT(60)
     def get_question_by_id(question_id):
         try:
             question = Question.objects.get(pk=question_id)
@@ -281,6 +325,7 @@ class Response(models.Model):
         return self.question.get_survey()
 
     @staticmethod
+    @MWT(60)
     def get_response_by_id(response_id):
         try:
             response = Response.objects.get(pk=response_id)
