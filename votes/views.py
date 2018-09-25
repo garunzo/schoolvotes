@@ -25,6 +25,7 @@ import os
 
 from .forms import SignUpForm
 
+TEST=True
 # https://realpython.com/getting-started-with-django-channels/
 
 # Create your views here. New view
