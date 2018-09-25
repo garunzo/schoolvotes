@@ -16,7 +16,9 @@
                   {{ survey.max_votes }})
                   {% endif %}<br/>
                   <a class="btn btn-primary" href="{% url 'survey' survey_id=survey.id %}">Take Survey</a>
-             <a class="btn btn-primary" href="{% url 'results' survey_id=survey.id %}">See Results</a><br/>
+                  {% if is_staff %}
+                  <a class="btn btn-primary" href="{% url 'results' survey_id=survey.id %}">See Results</a><br/>
+                  {% endif %}
 
        {% endfor %}
    </ul>
