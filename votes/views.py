@@ -101,7 +101,13 @@ def select_community(request, community_id):
     return redirect('account_login')
 
 def select_survey(request, survey_id):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated or TEST:
+        if TEST:
+            username = "Luca"
+            firstname = "Luca"
+        else:
+            username = request.user.username
+            firstname = request.user.first_name.title()
         username = request.user.username
         survey = Survey.get_survey_by_id(survey_id)
         community = survey.get_community()
@@ -110,7 +116,7 @@ def select_survey(request, survey_id):
         context = {
             "username" : username,
             "community" : community,
-            "firstname" : request.user.first_name.title(),
+            "firstname" : firstname,
             "communities" : Community.get_communities(),
             "survey": survey,
             "surveys" : surveys,
