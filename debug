@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ -n "$1" ]
+then
+	if [ "$1" == "on" ]
+	then
+		sed -i 's/DEBUG=False/DEBUG=True/' /home/ec2-user/schoolvotes/surveys/settings.py
+		echo "Debugging on."
+	else
+		sed -i 's/DEBUG=True/DEBUG=False/' /home/ec2-user/schoolvotes/surveys/settings.py
+		echo "Debugging off."
+	fi
+fi
