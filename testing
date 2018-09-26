@@ -5,8 +5,8 @@ then
 	then
 		sed -i 's/TEST=False/TEST=True/' /home/ec2-user/schoolvotes/votes/views.py
 		echo "Testing on."
+	else
+		sed -i 's/TEST=True/TEST=False/' /home/ec2-user/schoolvotes/votes/views.py
+		echo "Testing off."
 	fi
-else
-	sed -i 's/TEST=True/TEST=False/' /home/ec2-user/schoolvotes/votes/views.py
-	echo "Testing off."
 fi

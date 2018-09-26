@@ -26,7 +26,7 @@ from votes.memoize import MWT
 
 from .forms import SignUpForm
 
-TEST=True
+TEST=False
 # https://realpython.com/getting-started-with-django-channels/
 
 # Create your views here. New view
