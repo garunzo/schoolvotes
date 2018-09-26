@@ -21,6 +21,7 @@ from django.core.mail import send_mail
 from operator import itemgetter
 import json
 import os
+from votes.memoize import MWT
 
 
 from .forms import SignUpForm
@@ -31,32 +32,32 @@ TEST=True
 # Create your views here. New view
 def index(request):
     if request.user.is_authenticated:
-        username = request.user.username
-        # community = Community.get_community(username)
-        context = {
-            "username" : username,
-            "firstname" : request.user.first_name.title(),
-            # "community" : community,
-            "communities" : Community.get_communities(),
-            "message" : "",
-            "is_staff" : is_staff(request.user),
-        }
-        # if community is None:
-        #     return render(request, 'votes/community.html', context)
+        context = index_context(request)
         return render(request, 'votes/index.html', context)
     else:
         #return HttpResponse("You need to login")
         return redirect('account_login')
 
+def index_context(request):
+    context = {
+        "username" : request.user.username,
+        "firstname" : request.user.first_name.title(),
+        "communities" : Community.get_communities_matching_email(request.user.email),
+        "message" : "",
+        "is_staff" : is_staff(request.user),
+    }
+    return context
+
 def about(request):
     if request.user.is_authenticated:
         username = request.user.username
+        email = request.user.email
         # community = Community.get_community(username)
         context = {
             "username" : username,
             "firstname" : request.user.first_name.title(),
             # "community" : community,
-            "communities" : Community.get_communities(),
+            "communities" : Community.get_communities_matching_email(email),
             "message" : "",
             "is_staff" : is_staff(request.user),
         }
@@ -66,7 +67,7 @@ def about(request):
     else:
         context = {
             "username" : "",
-            "communities" : Community.get_communities(),
+            "communities" : "", # User not authenticated
             "message" : "",
             "is_staff" : False,
         }
@@ -85,6 +86,7 @@ def select_community(request, community_id):
             survey_dict['description'] = survey.get_description()
             survey_dict['max_votes'] = survey.get_max_votes()
             survey_dict['user_votes'] = survey.get_user_votes(email)
+            survey_dict['results_hidden'] = survey.results_are_hidden
             surveys_list_of_dict.append(survey_dict)
 
         context = {
@@ -92,7 +94,7 @@ def select_community(request, community_id):
             "email": email,
             "firstname" : request.user.first_name.title(),
             "community" : community,
-            "communities" : Community.get_communities(),
+            "communities" : Community.get_communities_matching_email(email),
             "surveys" : surveys,
             "surveys_list_of_dict": surveys_list_of_dict,
             "is_staff" : is_staff(request.user),
@@ -109,21 +111,24 @@ def select_survey(request, survey_id):
             username = request.user.username
             firstname = request.user.first_name.title()
         username = request.user.username
+        email = request.user.email
         survey = Survey.get_survey_by_id(survey_id)
         community = survey.get_community()
-        surveys = community.get_surveys_not_hidden()
         questions = survey.get_questions()
-        context = {
-            "username" : username,
-            "community" : community,
-            "firstname" : firstname,
-            "communities" : Community.get_communities(),
-            "survey": survey,
-            "surveys" : surveys,
-            "questions" : questions,
-            "is_staff" : is_staff(request.user),
-        }
-        return render(request, 'votes/survey.html', context)
+        if survey.user_authorized(email) or TEST:
+            context = {
+                "username" : username,
+                "firstname" : firstname,
+                "communities" : Community.get_communities_matching_email(email),
+                "is_staff" : is_staff(request.user),
+                "community" : community,
+                "survey": survey,
+                "questions" : questions,
+            }
+            return render(request, 'votes/survey.html', context)
+        else:
+            context['message'] = "You are not authorized to access that survey."
+            return render(request, 'votes/index.html', context)
     return redirect('account_login')
 
 def vote(request):
@@ -136,14 +141,18 @@ def vote(request):
         # Make sure that the voter can still vote
         # (i.e. has not exceeded number of allowed votes)
         response = False
+        status = False
         if len(keys) > 0:
             rid = request.POST[keys[0]][1:]
             response = Response.get_response_by_id(rid)
-            survey = response.get_survey()
-            status, vote_count = SurveyVoter.update_vote_record(survey= survey,
-                                           email=email, username=username)
-            if not status:
-                message = "Sorry, you are not allowed to submit another vote."
+            if response.user_authorized(email):
+                survey = response.get_survey()
+                status, vote_count = SurveyVoter.update_vote_record(survey= survey,
+                                               email=email, username=username)
+                if not status:
+                    message = "Sorry, you are not allowed to submit another vote."
+            else:
+                message = "You are not authorized to vote on this survey."
         else:
             message = "Sorry, your vote did not get recorded. " +\
                       "This is probably because no response was selected. " +\
@@ -184,7 +193,7 @@ def vote(request):
             "username" : username,
             "firstname" : request.user.first_name.title(),
             "community" : None,
-            "communities" : Community.get_communities(),
+            "communities" : Community.get_communities_matching_email(email),
             "message" : message,
             "is_staff" : is_staff(request.user),
         }
@@ -199,7 +208,7 @@ def test(request):
             "username" : username,
             "firstname" : request.user.first_name.title(),
             "community" : community,
-            "communities" : Community.get_communities(),
+            "communities" : Community.get_communities_matching_email(email),
             "message" : "",
             "is_staff" : is_staff(request.user),
         }
@@ -210,31 +219,32 @@ def results(request, survey_id):
         if TEST:
             username = "Luca"
             firstname = "Luca"
+            email = "lac@smmk12.org"
         else:
             username = request.user.username
             firstname = request.user.first_name.title()
+            email = request.user.email
 
         survey = Survey.get_survey_by_id(survey_id)
 
-        if survey != None:
+        if survey and (not survey.results_are_hidden() or is_staff(request.user)):
             response_percents = Survey.get_response_percents(survey_id)
             context = {
                 "username" : username,
                 "firstname" : firstname,
                 "survey" : survey,
-                "communities" : Community.get_communities(),
+                "communities" : Community.get_communities_matching_email(email),
                 "is_staff" : is_staff(request.user),
                 "response_percents" : response_percents,
             }
             return render(request, 'votes/results.v2.html', context)
         else:
-            context = {
-                "username" : username,
-                "firstname" : firstname,
-                "message" : "Survey not found",
-            }
-            return render(request, 'votes/index.html')
+            context = index_context(request)
+            context['message'] = "You are not authorized to view those results."
+            return render(request, 'votes/index.html', context)
     return redirect('account_login')
+
+
 
 # def signout(request):
 #     if request.user.is_authenticated:
@@ -274,16 +284,18 @@ def room(request, room_name):
     }
     return render(request, 'votes/room.html', context)
 
+@MWT(60)
 def is_staff(user):
     return user.groups.filter(name='Community Staff').exists()
 
 def suggestion(request):
     if request.user.is_authenticated:
+        email = request.user.email
         context = {
             "username" : request.user.username,
             "firstname" : request.user.first_name.title(),
             "is_staff" : is_staff(request.user),
-            "communities" : Community.get_communities(),
+            "communities" : Community.get_communities_matching_email(email),
         }
         return render(request, 'votes/suggestion.html', context)
     return redirect('account_login')
@@ -295,7 +307,7 @@ def mail(request):
             "firstname" : request.user.first_name.title(),
             "is_staff" : is_staff(request.user),
             "community" : None,
-            "communities" : Community.get_communities(),
+            "communities" : Community.get_communities_matching_email(email),
             "message" : "Thanks for your suggestion!",
             "is_staff" : is_staff(request.user),
         }

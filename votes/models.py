@@ -18,44 +18,7 @@ from django.utils import timezone
 
 import datetime
 
-import time
-
-class MWT(object):
-    """Memoize With Timeout"""
-    _caches = {}
-    _timeouts = {}
-
-    def __init__(self,timeout=2):
-        self.timeout = timeout
-
-    def collect(self):
-        """Clear cache of results which have timed out"""
-        for func in self._caches:
-            cache = {}
-            for key in self._caches[func]:
-                if (time.time() - self._caches[func][key][1]) < self._timeouts[func]:
-                    cache[key] = self._caches[func][key]
-            self._caches[func] = cache
-
-    def __call__(self, f):
-        self.cache = self._caches[f] = {}
-        self._timeouts[f] = self.timeout
-
-        def func(*args, **kwargs):
-            kw = sorted(kwargs.items())
-            key = (args, tuple(kw))
-            try:
-                v = self.cache[key]
-                # print("cache")
-                if (time.time() - v[1]) > self.timeout:
-                    raise KeyError
-            except KeyError:
-                # print("new")
-                v = self.cache[key] = f(*args,**kwargs),time.time()
-            return v[0]
-        func.func_name = f.__name__
-
-        return func
+from votes.memoize import MWT
 
 # Create your models here.
 class Community(models.Model):
@@ -63,6 +26,7 @@ class Community(models.Model):
     name = models.CharField(max_length=64)
     # https://coderwall.com/p/bz0sng/simple-django-image-upload-to-model-imagefield
     logo = models.ImageField(upload_to = 'logos', default = 'logos/no-img.jpg')
+    emails = models.CharField(max_length=254, blank=True, default='')
 
     class Meta:
         verbose_name_plural = "Communities"
@@ -75,6 +39,9 @@ class Community(models.Model):
 
     def get_surveys_not_hidden(self):
         return Survey.objects.filter(community=self, hide=False).order_by('create_date_time')
+
+    def get_emails(self):
+        return self.emails
 
     @staticmethod
     @MWT(60)
@@ -102,12 +69,51 @@ class Community(models.Model):
     def get_communities():
         return Community.objects.all()
 
+    @staticmethod
+    @MWT(60)
+    def get_communities_matching_email(useremail):
+        communities = Community.get_communities()
+        community_list = []
+        for community in communities:
+            if community.email_authorized(useremail):
+                community_list.append(community)
+        return community_list
+
+    @MWT(60)
+    def email_authorized(self, useremail):
+        email_list = list(filter(None, self.get_emails().split(';')))
+        if len(email_list) == 0:
+            return True
+        else:
+            for email in email_list:
+                if email in useremail:
+                    return True
+        return False
+
+
     def get_logo():
         path_elements = self.logo.split('/')
         print(path_elements)
         items = len(path_elements)
         print(path_elements[items-1])
         return path_elements[items-1]
+
+# class CommunityEmail(models.Model):
+#     community = models.ForeignKey(Community, on_delete=models.CASCADE)
+#     email = models.CharField(max_length=254,
+#                              blank=False)
+#
+#     def get_email(self):
+#         return email
+#
+#     @staticmethod
+#     @MWT(60)
+#     def get_community_emails(community):
+#         community_emails = CommunityEmail.objects.filter(community=community)
+#         emails = []
+#         for community_email in community_emails:
+#             emails.append(community_email.get_email())
+#         return emails
 
 class CommunityUser(models.Model):
     community = models.ForeignKey(Community, on_delete=models.CASCADE)
@@ -121,6 +127,7 @@ class Survey(models.Model):
     expiration_date_time = models.DateField(default=datetime.date.today)
     hide = models.BooleanField(default=False)
     max_votes = models.IntegerField(default=0)
+    results_hidden = models.BooleanField(default=False)
 
     def __str__(self):
       return f"Survey: {self.description}, Community: {self.community.name}"
@@ -148,6 +155,9 @@ class Survey(models.Model):
     def get_max_votes(self):
         return self.max_votes
 
+    def results_are_hidden(self):
+        return self.results_hidden
+
     def get_user_votes(self, email):
         survey_voters = SurveyVoter.objects.filter(survey=self, email = email)
         if len(survey_voters) > 1:
@@ -157,6 +167,10 @@ class Survey(models.Model):
             return survey_voters[0].get_vote_count()
         else:
             return 0
+
+    @MWT(60)
+    def user_authorized(self, email):
+        return self.community.email_authorized(email)
 
     @staticmethod
     @MWT(60)
@@ -323,6 +337,10 @@ class Response(models.Model):
 
     def get_survey(self):
         return self.question.get_survey()
+
+    @MWT(60)
+    def user_authorized(self, email):
+        return self.question.survey.community.email_authorized(email)
 
     @staticmethod
     @MWT(60)

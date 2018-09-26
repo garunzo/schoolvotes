@@ -86,7 +86,7 @@
                <a class="nav-link inactive" href="{% provider_login_url 'google' %}"><span class="myfont-scaling-med inactive">Sign In </span></a>
             </li>
          {% endif %}
-         {% if is_staff %}
+         {% if request.user.is_superuser %}
          <li class="nav-item">
            <a class="nav-link inactive" href="/admin"><span class="myfont-scaling-med">Admin</span></a>
          </li>
