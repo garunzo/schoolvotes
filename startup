@@ -1,0 +1,3 @@
+#!/bin/bash
+activate
+screen -t schoolvotes python bjoern-app.py

@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ -n "$1" ]
+then
+	if [ "$1" == "on" ]
+	then
+		sed -i 's/TEST=False/TEST=True/' /home/ec2-user/schoolvotes/votes/views.py
+		echo "Testing on."
+	fi
+else
+	sed -i 's/TEST=True/TEST=False/' /home/ec2-user/schoolvotes/votes/views.py
+	echo "Testing off."
+fi
