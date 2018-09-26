@@ -107,13 +107,13 @@ def select_survey(request, survey_id):
         if TEST:
             username = "Luca"
             firstname = "Luca"
+            email = "lac@smmk12.org"
             communities = Community.get_communities()
         else:
             username = request.user.username
             firstname = request.user.first_name.title()
-            communities = Community.get_communities_matching_email(email)
-        username = request.user.username
-        email = request.user.email
+            email = request.user.email
+
         survey = Survey.get_survey_by_id(survey_id)
         community = survey.get_community()
         questions = survey.get_questions()
@@ -121,7 +121,7 @@ def select_survey(request, survey_id):
             context = {
                 "username" : username,
                 "firstname" : firstname,
-                "communities" : communities,
+                "communities" : Community.get_communities_matching_email(email),
                 "is_staff" : is_staff(request.user),
                 "community" : community,
                 "survey": survey,
