@@ -7,6 +7,8 @@ sudo yum install -y nginx
 sudo yum install -y gcc
  sudo yum install libev-devel
 sudo service nginx start
+# make it so that nginx runs on reboot
+sudo chkconfig nginx on
 
 # Set up postgres
 #
