@@ -4,7 +4,18 @@ sudo yum install -y git
 sudo yum install -y gcc
 sudo yum install -y python36-devel
 sudo yum install -y nginx
+sudo yum install -y gcc
+ sudo yum install libev-devel
 sudo service nginx start
+
+# Set up postgres
+#
+# sudo yum install -y  https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-redhat10-10-2.noarch.rpm
+#  1063  sudo sed -i "s/rhel-\$releasever-\$basearch/rhel-latest-x86_64/g" "/etc/yum.repos.d/pgdg-10-redhat.repo"
+#   1064  sudo yum install -y postgresql10
+#    1065  sudo yum install -y systemd-sysv
+#     1066  sudo yum install -y systemd
+#      1067  sudo yum install -y postgresql
 # Set up virtual environment
 python3 -m venv ~/.virtualenvs/votes_prod
 # Activate the virtual environment
@@ -13,3 +24,9 @@ chmod o-w ~/.bash_profile
 chmod g-w ~/.bash_profile 
 
 runserver 0.0.0.0:8000 &> django.log
+
+# Set up the static files
+sudo rm -r static
+python manage.py collectstatic
+sudo chown -R nobody:nobody static
+

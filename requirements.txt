@@ -3,3 +3,5 @@ Pillow
 channels
 django-allauth
 django-sslserver
+psycopg2
+psycopg2-binary
