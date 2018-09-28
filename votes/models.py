@@ -20,6 +20,10 @@ import datetime
 
 from votes.memoize import MWT
 
+MWT_TIMEOUT = 60
+MWT_TIMEOUT_SURVEY_OPEN = 10
+
+
 # Create your models here.
 class Community(models.Model):
     cid = models.CharField(max_length=64)
@@ -44,7 +48,7 @@ class Community(models.Model):
         return self.emails
 
     @staticmethod
-    @MWT(60)
+    @MWT(MWT_TIMEOUT)
     def get_community_by_id(community_id):
         try:
             community = Community.objects.get(pk=community_id)
@@ -56,7 +60,7 @@ class Community(models.Model):
         return self.name
 
     @staticmethod
-    @MWT(60)
+    @MWT(MWT_TIMEOUT)
     def get_community(username):
         try:
             community = CommunityUser.objects.get(username=username)
@@ -65,12 +69,12 @@ class Community(models.Model):
         return community
 
     @staticmethod
-    @MWT(60)
+    @MWT(MWT_TIMEOUT)
     def get_communities():
         return Community.objects.all()
 
     @staticmethod
-    @MWT(60)
+    @MWT(MWT_TIMEOUT)
     def get_communities_matching_email(useremail):
         communities = Community.get_communities()
         community_list = []
@@ -79,7 +83,7 @@ class Community(models.Model):
                 community_list.append(community)
         return community_list
 
-    @MWT(60)
+    @MWT(MWT_TIMEOUT)
     def email_authorized(self, useremail):
         email_list = list(filter(None, self.get_emails().split(';')))
         if len(email_list) == 0:
@@ -98,23 +102,6 @@ class Community(models.Model):
         print(path_elements[items-1])
         return path_elements[items-1]
 
-# class CommunityEmail(models.Model):
-#     community = models.ForeignKey(Community, on_delete=models.CASCADE)
-#     email = models.CharField(max_length=254,
-#                              blank=False)
-#
-#     def get_email(self):
-#         return email
-#
-#     @staticmethod
-#     @MWT(60)
-#     def get_community_emails(community):
-#         community_emails = CommunityEmail.objects.filter(community=community)
-#         emails = []
-#         for community_email in community_emails:
-#             emails.append(community_email.get_email())
-#         return emails
-
 class CommunityUser(models.Model):
     community = models.ForeignKey(Community, on_delete=models.CASCADE)
     username = models.CharField(max_length=64)
@@ -125,9 +112,23 @@ class Survey(models.Model):
     description = models.CharField(max_length=80)
     create_date_time = models.DateTimeField(auto_now=False, auto_now_add=True)
     expiration_date_time = models.DateField(default=datetime.date.today)
-    hide = models.BooleanField(default=False)
+    hide = models.BooleanField(default=False,
+        help_text="Hide survey from community list")
     max_votes = models.IntegerField(default=0)
     results_hidden = models.BooleanField(default=False)
+    survey_auto_open_close = models.BooleanField(default=False, \
+        help_text="Set to true to close survey automatically based on " + \
+                  "survey_open_datetime and survey_close_datetime. " + \
+                  "Note that value is cached for " + str(MWT_TIMEOUT) + \
+                  " seconds")
+    survey_open_datetime = models.DateTimeField(default=timezone.now)
+    survey_close_datetime = models.DateTimeField(default=timezone.now)
+
+    @MWT(MWT_TIMEOUT_SURVEY_OPEN)
+    def is_closed(self):
+        return self.survey_auto_open_close and \
+               (timezone.now() < self.survey_open_datetime or \
+               timezone.now() > self.survey_close_datetime)
 
     def __str__(self):
       return f"Survey: {self.description}, Community: {self.community.name}"
@@ -168,12 +169,12 @@ class Survey(models.Model):
         else:
             return 0
 
-    @MWT(60)
+    @MWT(MWT_TIMEOUT)
     def user_authorized(self, email):
         return self.community.email_authorized(email)
 
     @staticmethod
-    @MWT(60)
+    @MWT(MWT_TIMEOUT)
     def get_survey_by_id(survey_id):
         try:
             survey = Survey.objects.get(pk=survey_id)
@@ -182,7 +183,7 @@ class Survey(models.Model):
         return survey
 
     @staticmethod
-    @MWT(60)
+    @MWT(MWT_TIMEOUT)
     def get_response_percents(survey_id):
         try:
             survey = Survey.objects.get(pk=survey_id)
@@ -305,7 +306,7 @@ class Question(models.Model):
         return self.response_limit
 
     @staticmethod
-    @MWT(60)
+    @MWT(MWT_TIMEOUT)
     def get_question_by_id(question_id):
         try:
             question = Question.objects.get(pk=question_id)
@@ -338,12 +339,12 @@ class Response(models.Model):
     def get_survey(self):
         return self.question.get_survey()
 
-    @MWT(60)
+    @MWT(MWT_TIMEOUT)
     def user_authorized(self, email):
         return self.question.survey.community.email_authorized(email)
 
     @staticmethod
-    @MWT(60)
+    @MWT(MWT_TIMEOUT)
     def get_response_by_id(response_id):
         try:
             response = Response.objects.get(pk=response_id)

@@ -15,7 +15,11 @@
                   {% else %}
                   {{ survey.max_votes }})
                   {% endif %}<br/>
-                  <a class="btn btn-primary" href="{% url 'survey' survey_id=survey.id %}">Take Survey</a>
+                  {% if survey.is_closed %}
+                     <a class="btn btn-primary" href="#">Survey Closed</a>
+                  {% else %}
+                     <a class="btn btn-primary" href="{% url 'survey' survey_id=survey.id %}">Take Survey</a>
+                  {% endif %}
                   {% if is_staff or not survey.results_hidden %}
                   <a class="btn btn-primary" href="{% url 'results' survey_id=survey.id %}">See Results</a><br/>
                   {% endif %}

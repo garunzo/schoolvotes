@@ -26,7 +26,7 @@ from votes.memoize import MWT
 
 from .forms import SignUpForm
 
-TEST=True
+TEST=False
 # https://realpython.com/getting-started-with-django-channels/
 
 # Create your views here. New view
@@ -87,7 +87,9 @@ def select_community(request, community_id):
             survey_dict['max_votes'] = survey.get_max_votes()
             survey_dict['user_votes'] = survey.get_user_votes(email)
             survey_dict['results_hidden'] = survey.results_are_hidden
+            survey_dict['is_closed'] = survey.is_closed()
             surveys_list_of_dict.append(survey_dict)
+            print("is closed?", survey.is_closed())
 
         context = {
             "username" : username,
@@ -113,11 +115,11 @@ def select_survey(request, survey_id):
             username = request.user.username
             firstname = request.user.first_name.title()
             email = request.user.email
-
         survey = Survey.get_survey_by_id(survey_id)
-        community = survey.get_community()
-        questions = survey.get_questions()
-        if survey.user_authorized(email) or TEST:
+        survey_open = not survey.is_closed()
+        if (survey.user_authorized(email) and survey_open) or TEST:
+            community = survey.get_community()
+            questions = survey.get_questions()
             context = {
                 "username" : username,
                 "firstname" : firstname,
@@ -129,7 +131,11 @@ def select_survey(request, survey_id):
             }
             return render(request, 'votes/survey.html', context)
         else:
-            context['message'] = "You are not authorized to access that survey."
+            context = index_context(request)
+            if survey_open:
+                context['message'] = "You are not authorized to access that survey."
+            else:
+                context['message'] = "Sorry. No more voting permitted. Survey closed."
             return render(request, 'votes/index.html', context)
     return redirect('account_login')
 
@@ -149,6 +155,10 @@ def vote(request):
             response = Response.get_response_by_id(rid)
             if response.user_authorized(email):
                 survey = response.get_survey()
+                if survey.is_closed():
+                    context = index_context(request)
+                    context['message'] = "Sorry. No more voting permitted. Survey closed."
+                    return render(request, 'votes/index.html', context)
                 status, vote_count = SurveyVoter.update_vote_record(survey= survey,
                                                email=email, username=username)
                 if not status:
