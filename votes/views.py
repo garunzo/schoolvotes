@@ -18,6 +18,7 @@ from django.contrib.auth import logout, authenticate, login
 from .models import Community, Survey, Question, Response, ResponseVote, SurveyVoter
 from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
+from django import template
 from operator import itemgetter
 import json
 import os
@@ -28,6 +29,8 @@ from .forms import SignUpForm
 
 TEST=False
 # https://realpython.com/getting-started-with-django-channels/
+
+
 
 # Create your views here. New view
 def index(request):
@@ -79,16 +82,6 @@ def select_community(request, community_id):
         email = request.user.email
         community = Community.get_community_by_id(community_id)
         surveys = community.get_surveys_not_hidden()
-        surveys_list_of_dict = []
-        for survey in surveys:
-            survey_dict = {}
-            survey_dict['id'] = survey.id
-            survey_dict['description'] = survey.get_description()
-            survey_dict['max_votes'] = survey.get_max_votes()
-            survey_dict['user_votes'] = survey.get_user_votes(email)
-            survey_dict['results_hidden'] = survey.results_are_hidden
-            survey_dict['is_closed'] = survey.is_closed()
-            surveys_list_of_dict.append(survey_dict)
 
         context = {
             "username" : username,
@@ -97,11 +90,16 @@ def select_community(request, community_id):
             "community" : community,
             "communities" : Community.get_communities_matching_email(email),
             "surveys" : surveys,
-            "surveys_list_of_dict": surveys_list_of_dict,
             "is_staff" : is_staff(request.user),
         }
         return render(request, 'votes/community.html', context)
     return redirect('account_login')
+
+register = template.Library()
+
+@register.simple_tag
+def get_user_votes(survey, email):
+    return survey.get_user_votes(email)
 
 def select_survey(request, survey_id):
     if request.user.is_authenticated or TEST:

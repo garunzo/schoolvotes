@@ -15,6 +15,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from operator import itemgetter
 from django.utils import timezone
+from django.utils.timezone import localtime
+
 
 import datetime
 
@@ -130,6 +132,18 @@ class Survey(models.Model):
                (timezone.now() < self.survey_open_datetime or \
                timezone.now() > self.survey_close_datetime)
 
+    @MWT(MWT_TIMEOUT_SURVEY_OPEN)
+    def has_not_closed_yet(self):
+        return self.survey_auto_open_close and (timezone.now() < self.survey_close_datetime)
+
+    @MWT(MWT_TIMEOUT_SURVEY_OPEN)
+    def get_open_datetime_str(self):
+        return localtime(self.survey_open_datetime).strftime('%m-%d-%Y %I:%M %p')
+
+    @MWT(MWT_TIMEOUT_SURVEY_OPEN)
+    def get_close_datetime_str(self):
+        return localtime(self.survey_close_datetime).strftime('%m-%d-%Y %I:%M %p')
+
     def __str__(self):
       return f"Survey: {self.description}, Community: {self.community.name}"
 
@@ -144,20 +158,26 @@ class Survey(models.Model):
     def get_questions(self):
         return Question.objects.filter(survey=self).order_by('_rank')
 
+    @MWT(MWT_TIMEOUT)
     def get_description(self):
         return self.description
 
+    @MWT(MWT_TIMEOUT)
     def get_community(self):
         return self.community
 
+    @MWT(MWT_TIMEOUT)
     def isHidden(self):
         return self.hide
 
+    @MWT(MWT_TIMEOUT)
     def get_max_votes(self):
         return self.max_votes
 
+    @MWT(MWT_TIMEOUT)
     def results_are_hidden(self):
         return self.results_hidden
+
 
     def get_user_votes(self, email):
         survey_voters = SurveyVoter.objects.filter(survey=self, email = email)

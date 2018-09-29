@@ -4,24 +4,31 @@
 {% block sidenav %}
 {% endblock %}
 {% block content %}
+{% load votes_extras %}
 <img src="{{ community.logo.url }}" alt="community logo"  width="150" height="150"><br/>
    <strong>Surveys for {{ community.name }}</strong>
-       {% for survey in surveys_list_of_dict %}
+       {% for survey in surveys %}
          <hr>
-
-             {{ survey.description }} (Votes: {{ survey.user_votes }} of
-                  {% if survey.max_votes == 0 %}
+             {{ survey.get_description }} (Votes: {% get_user_votes survey email %} of
+                  {% if survey.get_max_votes == 0 %}
                   Unlimited)
                   {% else %}
-                  {{ survey.max_votes }})
+                  {{ survey.get_max_votes }})
                   {% endif %}<br/>
                   {% if survey.is_closed %}
-                     <a class="btn btn-primary" href="#">Survey Closed</a>
+                     <a class="btn btn-primary disabled" href="#">Survey Closed</a>
                   {% else %}
                      <a class="btn btn-primary" href="{% url 'survey' survey_id=survey.id %}">Take Survey</a>
                   {% endif %}
-                  {% if is_staff or not survey.results_hidden %}
+                  {% if is_staff or not survey.results_are_hidden %}
                   <a class="btn btn-primary" href="{% url 'results' survey_id=survey.id %}">See Results</a><br/>
+                  {% endif %}
+                  {% if survey.has_not_closed_yet %}
+                   <font size="-0.5">
+                     Survey open from {{ survey.get_open_datetime_str }}
+                     to {{ survey.get_close_datetime_str }}
+                     <br/>
+                  </font>
                   {% endif %}
 
        {% endfor %}
