@@ -1,0 +1,5 @@
+#!/bin/bash
+cd schoolvotes
+source ~/.virtualenvs/votes_prod/bin/activate
+git pull origin master
+
