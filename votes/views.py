@@ -89,7 +89,6 @@ def select_community(request, community_id):
             survey_dict['results_hidden'] = survey.results_are_hidden
             survey_dict['is_closed'] = survey.is_closed()
             surveys_list_of_dict.append(survey_dict)
-            print("is closed?", survey.is_closed())
 
         context = {
             "username" : username,

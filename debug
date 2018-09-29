@@ -1,13 +1,28 @@
 #!/bin/bash
 CWD=`pwd`
+UNAME=`uname`
 if [ -n "$1" ]
 then
 	if [ "$1" == "on" ]
 	then
-		sed -i .bk 's/DEBUG=False/DEBUG=True/' $CWD/surveys/settings.py
+		if [ "$UNAME" == "Darwin" ]
+		then
+			sed -i .bk 's/DEBUG=False/DEBUG=True/' $CWD/surveys/settings.py
+		fi
+		if [ "$UNAME" == "Linux" ]
+		then
+			sed -i[.bk] 's/DEBUG=False/DEBUG=True/' $CWD/surveys/settings.py
+		fi
 		echo "Debugging on."
 	else
-		sed -i .bk 's/DEBUG=True/DEBUG=False/' $CWD/surveys/settings.py
+		if [ "$UNAME" == "Darwin" ]
+		then
+			sed -i .bk 's/DEBUG=True/DEBUG=False/' $CWD/surveys/settings.py
+		fi
+		if [ "$UNAME" == "Linux" ]
+		then
+			sed -i[.bk] 's/DEBUG=True/DEBUG=False/' $CWD/surveys/settings.py
+		fi
 		echo "Debugging off."
 	fi
 fi
