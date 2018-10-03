@@ -1,0 +1,79 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+   <!-- <meta charset="utf-8"> -->
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Created to make student participation in school decisions a reality. With its easy-to-use interface, students vote to make their voices heard.">
+    <meta name="keywords" content="School, Vote, Voting, Students, Survey, ASB" />
+    <meta name="author" content="Luca Cotter">
+    <link rel="shortcut icon" href="static/favicon.ico">
+
+    <title>School Votes</title>
+
+    <link rel="stylesheet" href="static/votes/styles.css"/>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+   <title>School Votes</title>
+
+   <!-- Bootstrap core CSS -->
+   <link href="static/votes/bootstrap.css' %}" rel="stylesheet">
+
+   <!-- Custom styles for this template -->
+   <link href="static/votes/starter-template.css' %}" rel="stylesheet">
+   <link rel="stylesheet" href="static/votes/bars.css' %}"/>
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+   <link rel="stylesheet" href="static/votes/styles-final.css' %}"/>
+</head>
+
+<body>
+   <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #4057B6;">
+      <!-- <svg class="d-block" width="36" height="36" viewBox="0 0 612 612" xmlns="http://www.w3.org/2000/svg" focusable="false">\ -->
+     <!-- <a class="navbar-brand" href="#">School Votes</a> -->
+    <a class="navbar-brand" href="#"><span class="mb-0"><span class="myfont-scaling-med">School Votes</span></span></a>
+     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+     </button>
+
+     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+
+         <!-- Home Button -->
+         <li class="nav-item inactive">
+           <a class="nav-link" href="{% url 'index' %}"><span class="myfont-scaling-med">Home </sapn><span class="sr-only">(current)</span></a>
+         </li>
+
+         <!-- About Button -->
+         <li class="nav-item inactive">
+           <a class="nav-link" href="{% url 'about' %}"><span class="myfont-scaling-med">About</span><span class="sr-only">(current)</span></a>
+         </li>
+
+            <li>
+               <a class="nav-link inactive" href="{% provider_login_url 'google' %}"><span class="myfont-scaling-med inactive">Sign In </span></a>
+            </li>
+
+      </ul>
+     </div>
+   </nav>
+   <main>
+      <div class="mymain">
+Server under high load, please try again in 10 minutes.
+      </div>
+   </main>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="{% static 'votes/jquery-3.js' %}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<script src="{% static 'votes/popper.js' %}"></script>
+<script src="{% static 'votes/bootstrap.js' %}"></script>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbW
+</body>
+</html>

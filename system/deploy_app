@@ -2,4 +2,25 @@
 cd schoolvotes
 source ~/.virtualenvs/votes_prod/bin/activate
 git pull origin master
-
+if [ -n "$1" ]
+then
+    if [ "$1" == "debug" ]
+    then
+        ./debug on
+	./testing on
+    elif [ "$1" == "test" ]
+    then
+        ./debug off
+        ./testing on
+    else
+        ./debug off
+        ./testing off
+    fi
+else
+    ./debug off
+    ./testing off
+fi
+sudo chown -R ec2-user:ec2-user static
+python manage.py collectstatic
+sudo chown -R nobody:nobody static
+echo Deploy complete
