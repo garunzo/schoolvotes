@@ -40,9 +40,11 @@ class Community(models.Model):
     def __str__(self):
         return f"Community Code: {self.cid}, Name: {self.name}, logo: {self.logo}"
 
+    @MWT(MWT_TIMEOUT)
     def get_surveys(self):
         return Survey.objects.filter(community=self).order_by('create_date_time')
 
+    @MWT(MWT_TIMEOUT)
     def get_surveys_not_hidden(self):
         return Survey.objects.filter(community=self, hide=False).order_by('create_date_time')
 
@@ -96,7 +98,7 @@ class Community(models.Model):
                     return True
         return False
 
-
+    @MWT(MWT_TIMEOUT)
     def get_logo():
         path_elements = self.logo.split('/')
         print(path_elements)
@@ -155,6 +157,7 @@ class Survey(models.Model):
     def del_question(self, question):
         question.delete()
 
+    @MWT(MWT_TIMEOUT)
     def get_questions(self):
         return Question.objects.filter(survey=self).order_by('_rank')
 
@@ -288,6 +291,7 @@ class Question(models.Model):
 
         return f"Survey: , Rank: {self.rank()}, Question Text: {self.text()}"
 
+    @MWT(MWT_TIMEOUT)
     def get_responses(self):
         responses = Response.objects.filter(question=self).order_by('_rank')
         return responses
@@ -322,6 +326,7 @@ class Question(models.Model):
     def get_survey(self):
         return self.survey
 
+    @MWT(MWT_TIMEOUT)
     def get_response_limit(self):
         return self.response_limit
 

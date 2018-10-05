@@ -1,0 +1,5 @@
+#!/bin/bash
+cd schoolvotes
+PID=../gunicorn.pid
+source ~/.virtualenvs/votes_prod/bin/activate
+screen -t votes -d -m gunicorn surveys.wsgi --workers=4 --pid=$PID
