@@ -4,12 +4,30 @@
 {% block content %}
   <strong>Welcome to School Votes, {{ firstname }}</strong>
   <hr>
-  {% if message != None %}
+  {% if message %}
   <strong> {{ message }} </strong> </br>
   <hr>
   {% endif %}
-   Select a school in navigation bar.
+   {% if communities %}
+   Select a school in navigation bar above or in list below.
    <hr>
+   {% endif %}
+    {% if user.is_authenticated %}
+       {% if communities %}
+          <ul>
+             {% for community in communities %}
+                <li> <a href="{% url 'community' community_id=community.id %}"><span class="myfont-scaling-med">{{ community.get_name }}</span></a>
+                </li>
+             {% endfor %}
+          </ul>
+             <span class="myfont-scaling-sm">If you don't see your school, please make sure you logged in with your school email address. For example: abc@smmk12.org. To do so, you may have to open a new private window or clear history.</span>
+       {% else %}
+        You are not authorized for any schools with the email address you used: {{ email }}. <br/> 
+Please make sure that you have signed in with your school email. For example: abc@smmk12.org. To do so, you may have to open a new private window or clear history.
+       {% endif %}
+       <hr>
+    {% endif %}
+
 <!-- Copyright -->
 <footer class="page-footer blue pt-4 fixed-bottom">
 <div class="footer-copyright text-center py-3 bg-white myfont-scaling-sm">Copyright © 2018 Luca Cotter. All rights reserved.

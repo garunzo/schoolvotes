@@ -27,7 +27,7 @@ from votes.memoize import MWT
 
 from .forms import SignUpForm
 
-TEST=True
+TEST=False
 # https://realpython.com/getting-started-with-django-channels/
 
 
@@ -44,9 +44,10 @@ def index(request):
 def index_context(request):
     context = {
         "username" : request.user.username,
+        "email" : request.user.email,
         "firstname" : request.user.first_name.title(),
         "communities" : Community.get_communities_matching_email(request.user.email),
-        "message" : "",
+        "message" : None,
         "is_staff" : is_staff(request.user),
     }
     return context
