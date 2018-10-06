@@ -2,4 +2,4 @@
 cd schoolvotes
 PID=../gunicorn.pid
 source ~/.virtualenvs/votes_prod/bin/activate
-screen -t votes -d -m gunicorn surveys.wsgi --workers=4 --pid=$PID
+screen -t votes -d -m gunicorn surveys.wsgi --workers=2 --pid=$PID
