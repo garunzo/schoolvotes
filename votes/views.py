@@ -27,7 +27,7 @@ from votes.memoize import MWT
 
 from .forms import SignUpForm
 
-TEST=False
+TEST=True
 # https://realpython.com/getting-started-with-django-channels/
 
 
@@ -311,6 +311,7 @@ def suggestion(request):
 
 def mail(request):
     if request.user.is_authenticated and request.method == 'POST':
+        email = request.user.email
         context = {
             "username" : request.user.username,
             "firstname" : request.user.first_name.title(),
