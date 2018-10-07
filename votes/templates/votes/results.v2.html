@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
      <strong>{{question.text}}</strong><br/>
      {% for response in question.get_responses_by_votes %} <!-- get ordered responses -->
          {{response.text}} ({{response.votes}})<br/>
-         <div class="progressBar" id="progressBar">
+         <div class="progressBar" >
           <div class="progressResult" id="rid_{{response.id}}"></div>
          </div>
      {% endfor %}
