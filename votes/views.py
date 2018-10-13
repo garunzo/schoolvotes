@@ -27,7 +27,7 @@ from votes.memoize import MWT
 
 from .forms import SignUpForm
 
-TEST=True
+TEST=False
 # https://realpython.com/getting-started-with-django-channels/
 
 
@@ -225,7 +225,18 @@ def test(request):
     return render(request, 'votes/test.html', context)
 
 def results(request, survey_id):
-    if request.user.is_authenticated or TEST:
+    if TEST:
+        username = "Luca"
+        firstname = "Luca"
+        email = "lac@smmk12.org"
+    else:
+        username = request.user.username
+        firstname = request.user.first_name.title()
+        email = request.user.email
+
+    survey = Survey.get_survey_by_id(survey_id)
+
+    if (request.user.is_authenticated and not survey.isHidden())or TEST:
         if TEST:
             username = "Luca"
             firstname = "Luca"

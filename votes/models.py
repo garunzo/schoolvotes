@@ -194,7 +194,15 @@ class Survey(models.Model):
 
     @MWT(MWT_TIMEOUT)
     def user_authorized(self, email):
+        print(self)
+        print(community)
         return self.community.email_authorized(email)
+
+    @staticmethod
+    @MWT(MWT_TIMEOUT)
+    def user_athorized(email, sid):
+        survey = Survey.get_survey_by_id(sid)
+        return survey.user_authorized(email)
 
     @staticmethod
     @MWT(MWT_TIMEOUT)
