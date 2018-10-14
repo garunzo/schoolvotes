@@ -8,6 +8,9 @@ sudo yum install -y gcc
  sudo yum install libev-devel
 yum install -y httpd-tools
 sudo service nginx start
+
+#python2
+pip install supervisord
 # make it so that nginx runs on reboot
 sudo chkconfig nginx on
 
@@ -32,4 +35,7 @@ runserver 0.0.0.0:8000 &> django.log
 sudo rm -r static
 python manage.py collectstatic
 sudo chown -R nobody:nobody static
+
+# enable gunicorn to start at boot
+sudo cp schoolvotes.conf /etc/init/schoovotes.conf
 
