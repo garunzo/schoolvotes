@@ -1,0 +1,3 @@
+#!/bin/bash
+
+psql -h schoolvotes.crfmfmw2lj5n.us-east-2.rds.amazonaws.com -d testdb -U schoolvotesadmin

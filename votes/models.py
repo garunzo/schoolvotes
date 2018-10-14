@@ -125,8 +125,8 @@ class Survey(models.Model):
                   "survey_open_datetime and survey_close_datetime. " + \
                   "Note that value is cached for " + str(MWT_TIMEOUT) + \
                   " seconds")
-    survey_open_datetime = models.DateTimeField(default=timezone.now)
-    survey_close_datetime = models.DateTimeField(default=timezone.now)
+    survey_open_datetime = models.DateTimeField(default=timezone.now, null=True)
+    survey_close_datetime = models.DateTimeField(default=timezone.now, null=True)
 
     @MWT(MWT_TIMEOUT_SURVEY_OPEN)
     def is_closed(self):
@@ -194,8 +194,6 @@ class Survey(models.Model):
 
     @MWT(MWT_TIMEOUT)
     def user_authorized(self, email):
-        print(self)
-        print(community)
         return self.community.email_authorized(email)
 
     @staticmethod
