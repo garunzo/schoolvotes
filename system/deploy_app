@@ -23,4 +23,5 @@ fi
 sudo chown -R ec2-user:ec2-user static
 python manage.py collectstatic
 sudo chown -R nobody:nobody static
+sudo service nginx restart
 echo Deploy complete
