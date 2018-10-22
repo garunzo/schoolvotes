@@ -20,14 +20,16 @@ from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
 from django import template
 from operator import itemgetter
+import urllib
 import json
 import os
 from votes.memoize import MWT
+from django.conf import settings
 
 
 from .forms import SignUpForm
 
-TEST=False
+TEST=True
 # https://realpython.com/getting-started-with-django-channels/
 
 
@@ -375,7 +377,7 @@ def contact_mail(request):
             "is_staff" : is_staff(request.user),
             "community" : None,
             "communities" : Community.get_communities_matching_email(email),
-            "message" : "Thanks for your interest!" + str(result['success'])+ str(result),
+            "message" : "Thanks for your interest!",
             "is_staff" : is_staff(request.user),
         }
         send_mail(subject, message, from_mail, to, fail_silently=False,
