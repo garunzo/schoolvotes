@@ -354,7 +354,20 @@ def contact_mail(request):
     password =  os.environ.get("MAIL_ACCOUNT_PWD", '')
     auth_user = 'boardingpassfcb@gmail.com'
 
-    if request.user.is_authenticated and request.method == 'POST':
+    ''' Begin reCAPTCHA validation '''
+    recaptcha_response = request.POST.get('g-recaptcha-response')
+    url = 'https://www.google.com/recaptcha/api/siteverify'
+    values = {
+        'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+        'response': recaptcha_response
+    }
+    data = urllib.parse.urlencode(values).encode()
+    req =  urllib.request.Request(url, data=data)
+    response = urllib.request.urlopen(req)
+    result = json.loads(response.read().decode())
+    ''' End reCAPTCHA validation '''
+
+    if request.user.is_authenticated and request.method == 'POST' and result['success']:
         email = request.user.email
         context = {
             "username" : request.user.username,
@@ -368,7 +381,9 @@ def contact_mail(request):
         send_mail(subject, message, from_mail, to, fail_silently=False,
                   auth_user = auth_user, auth_password=password)
         return render(request, 'votes/index.html', context)
-    else:
+    elif result['success']:
         send_mail(subject, message, from_mail, to, fail_silently=False,
                   auth_user = auth_user, auth_password=password)
+        return redirect('account_login')
+    else:
         return redirect('account_login')
