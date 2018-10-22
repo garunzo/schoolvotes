@@ -375,7 +375,7 @@ def contact_mail(request):
             "is_staff" : is_staff(request.user),
             "community" : None,
             "communities" : Community.get_communities_matching_email(email),
-            "message" : "Thanks for your interest!",
+            "message" : "Thanks for your interest!" + str(result['success'])+ str(result),
             "is_staff" : is_staff(request.user),
         }
         send_mail(subject, message, from_mail, to, fail_silently=False,

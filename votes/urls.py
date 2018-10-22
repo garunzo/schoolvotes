@@ -37,7 +37,7 @@ urlpatterns = [
     path('test/<int:id>', views.test, name='test-selection'),
     path('suggestion', views.suggestion, name='suggestion'),
     path('mail', views.mail, name='mail'),
-    path('contact_mail', views.mail, name='contact_mail'),
+    path('contact_mail', views.contact_mail, name='contact_mail'),
 
     url(r'^favicon\.ico$', favicon_view),
 
