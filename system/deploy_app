@@ -23,5 +23,8 @@ fi
 sudo chown -R ec2-user:ec2-user static
 python manage.py collectstatic
 sudo chown -R nobody:nobody static
+echo "Restarting nginx..."
 sudo service nginx restart
+echo "Reloading gunicorn..."
+sudo kill -HUP `cat ../gunicorn.pid`
 echo Deploy complete
