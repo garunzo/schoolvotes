@@ -1,4 +1,5 @@
 #!/bin/bash
+source ~/.bash_profile
 cd schoolvotes
 source ~/.virtualenvs/votes_prod/bin/activate
 git pull origin master
