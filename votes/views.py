@@ -318,7 +318,7 @@ def contact(request):
             "communities" : Community.get_communities_matching_email(email),
         }
         return render(request, 'votes/contact.html', context)
-    return redirect('account_login')
+    return render(request, 'votes/contact.html')
 
 def mail(request):
     if request.user.is_authenticated and request.method == 'POST':
@@ -347,7 +347,7 @@ def mail(request):
 def contact_mail(request):
     subject = "School Votes Contact"
     name = request.user.username or "anonymous"
-    prologue = name + " from school votes web site suggests '"
+    prologue = name + " from school votes web site says '"
     message = prologue + request.POST['message'] + "'"
     from_mail = 'fcbboardingpass@gmail.com'
     to = ['luca.a.cotter@gmail.com']
