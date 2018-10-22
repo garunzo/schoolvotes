@@ -21,7 +21,7 @@ else
     ./testing off
 fi
 sudo chown -R ec2-user:ec2-user static
-python manage.py collectstatic
+echo yes | python manage.py collectstatic
 sudo chown -R nobody:nobody static
 echo "Restarting nginx..."
 sudo service nginx restart
