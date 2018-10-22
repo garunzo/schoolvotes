@@ -5,12 +5,12 @@
 {% endblock %}
 {% block content %}
 <div class="container-fluid">
-  Thanks for offering a suggestion, {{ firstname }}!
+  Thanks for your interest! Please make sure to include your contact info.
   <hr>
-  <form action="{% url 'mail' %}" method="post">
+  <form action="{% url 'contact_mail' %}" method="post">
      {% csrf_token %}
 
- <textarea name="message" rows="10" cols="30" placeholder="Enter suggestion here"></textarea>
+ <textarea name="message" rows="10" cols="30" placeholder="Enter contact info and request here"></textarea>
 </br>
  <input class="btn btn-primary" type="submit">
   </form>

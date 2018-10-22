@@ -265,19 +265,6 @@ def results(request, survey_id):
             return render(request, 'votes/index.html', context)
     return redirect('account_login')
 
-
-
-# def signout(request):
-#     if request.user.is_authenticated:
-#         username = request.user.username
-#         logout(request)
-#         context = {
-#             "username" : username,
-#             "is_staff" : is_staff(request.user),
-#         }
-#         return render(request, 'votes/logout.html', context)
-#     return redirect('account_login')
-
 def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -321,6 +308,18 @@ def suggestion(request):
         return render(request, 'votes/suggestion.html', context)
     return redirect('account_login')
 
+def contact(request):
+    if request.user.is_authenticated:
+        email = request.user.email
+        context = {
+            "username" : request.user.username,
+            "firstname" : request.user.first_name.title(),
+            "is_staff" : is_staff(request.user),
+            "communities" : Community.get_communities_matching_email(email),
+        }
+        return render(request, 'votes/contact.html', context)
+    return redirect('account_login')
+
 def mail(request):
     if request.user.is_authenticated and request.method == 'POST':
         email = request.user.email
@@ -344,3 +343,32 @@ def mail(request):
                   auth_user = auth_user, auth_password=password)
         return render(request, 'votes/index.html', context)
     return redirect('account_login')
+
+def contact_mail(request):
+    subject = "School Votes Contact"
+    name = request.user.username or "anonymous"
+    prologue = name + " from school votes web site suggests '"
+    message = prologue + request.POST['message'] + "'"
+    from_mail = 'fcbboardingpass@gmail.com'
+    to = ['luca.a.cotter@gmail.com']
+    password =  os.environ.get("MAIL_ACCOUNT_PWD", '')
+    auth_user = 'boardingpassfcb@gmail.com'
+
+    if request.user.is_authenticated and request.method == 'POST':
+        email = request.user.email
+        context = {
+            "username" : request.user.username,
+            "firstname" : request.user.first_name.title(),
+            "is_staff" : is_staff(request.user),
+            "community" : None,
+            "communities" : Community.get_communities_matching_email(email),
+            "message" : "Thanks for your interest!",
+            "is_staff" : is_staff(request.user),
+        }
+        send_mail(subject, message, from_mail, to, fail_silently=False,
+                  auth_user = auth_user, auth_password=password)
+        return render(request, 'votes/index.html', context)
+    else:
+        send_mail(subject, message, from_mail, to, fail_silently=False,
+                  auth_user = auth_user, auth_password=password)
+        return redirect('account_login')

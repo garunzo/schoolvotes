@@ -22,6 +22,7 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("index", views.index),
     path("about", views.about, name="about"),
+    path("contact", views.contact, name="contact"),
 
     path("community/<int:community_id>", views.select_community, name="community"),
     path("survey/<int:survey_id>", views.select_survey, name="survey"),
@@ -36,6 +37,8 @@ urlpatterns = [
     path('test/<int:id>', views.test, name='test-selection'),
     path('suggestion', views.suggestion, name='suggestion'),
     path('mail', views.mail, name='mail'),
+    path('contact_mail', views.mail, name='contact_mail'),
+
     url(r'^favicon\.ico$', favicon_view),
 
 
