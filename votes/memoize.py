@@ -1,3 +1,7 @@
+# Borrowed from http://code.activestate.com/recipes/325905-memoize-decorator-with-timeout/
+#
+#  Leslie Polzer
+
 import time
 
 class MWT(object):
