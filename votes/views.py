@@ -322,6 +322,9 @@ def contact(request):
         return render(request, 'votes/contact.html', context)
     return render(request, 'votes/contact.html')
 
+def privacy(request):
+    return render(request, 'votes/privacy.html')
+
 def mail(request):
     if request.user.is_authenticated and request.method == 'POST':
         email = request.user.email

@@ -23,6 +23,7 @@ urlpatterns = [
     path("index", views.index),
     path("about", views.about, name="about"),
     path("contact", views.contact, name="contact"),
+    path("privacy", views.privacy, name="contact"),
 
     path("community/<int:community_id>", views.select_community, name="community"),
     path("survey/<int:survey_id>", views.select_survey, name="survey"),
