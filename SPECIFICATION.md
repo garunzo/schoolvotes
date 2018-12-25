@@ -70,7 +70,7 @@ The results page is kept current automatically using websockets. In order to red
 
 ### Logins
 * superuser
-   * login: lucacotter
+   * login: 
    * pwd:
 
 
