@@ -1,9 +1,6 @@
 ## Background
 
-I am a high school student who wants to improve student participation in 
-decision making at my high school. My high school used paper ballots for us 
-to use in order to make decisions. As a result of this, we did not conduct 
-many surveys.
+I am a high school student who wants to improve student participation in decision making at my high school. My high school used paper ballots for us to use in order to make decisions. As a result of this, we did not conduct many surveys. The first production version was released 10/05/2018.
 
 ## Project location
 
@@ -15,8 +12,8 @@ many surveys.
 My idea is to create a web-based voting application that will allow schools 
 to rapidly conduct a survey of various topics. 
 
-The application will be able to use various authentication mechanisms, but 
-initially will use google's authentication since my high school uses google 
+The application is able to use various authentication mechanisms, but 
+currently uses google's authentication since my high school uses google 
 for its email system.
 
 
