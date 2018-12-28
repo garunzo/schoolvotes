@@ -157,8 +157,8 @@ def vote(request):
             response = Response.get_response_by_id(rid)
             if response.user_authorized(email):
                 survey = response.get_survey()
-                surveys = community.get_surveys_not_hidden()
                 community = survey.get_community()
+                surveys = community.get_surveys_not_hidden()
                 if survey.is_closed():
                     context = index_context(request)
                     context['message'] = "Sorry. No more voting permitted. Survey closed."
