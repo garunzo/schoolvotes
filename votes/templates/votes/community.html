@@ -5,8 +5,15 @@
 {% endblock %}
 {% block content %}
 {% load votes_extras %}
+  {% if message %}
+  <hr>
+  <strong> {{ message }} </strong> </br>
+  <hr>
+  {% endif %}
+<!--
 <img src="{{ community.logo.url }}" alt="community logo"  width="150" height="150"><br/>
 <img src="/media/logos/dailybulletin.jpeg" alt="daily bulleting"><br/>
+-->
    <strong>Surveys for {{ community.name }}</strong>
        {% for survey in surveys %}
          <hr>
