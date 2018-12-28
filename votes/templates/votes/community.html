@@ -23,7 +23,7 @@
                   {% else %}
                   {{ survey.get_max_votes }})
                   {% endif %}<br/>
-                  {% if survey.is_closed or survey.get_max_votes != 0 and get_user_votes >= survey.get_max_votes %}
+                  {% if survey.is_closed or survey.get_max_votes != 0 and get_user_votes survey email >= survey.get_max_votes %}
                      <a class="btn btn-primary disabled" href="#">Survey Closed</a>
                   {% else %}
                      <a class="btn btn-primary" href="{% url 'survey' survey_id=survey.id %}">Take Survey</a>
