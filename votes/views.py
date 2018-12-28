@@ -215,7 +215,7 @@ def vote(request):
             "surveys" : surveys,
             "is_staff" : is_staff(request.user),
         }
-        return render(request, 'votes/index.html', context)
+        return render(request, 'votes/community.html', context)
     return redirect('account_login')
 
                 
