@@ -165,7 +165,6 @@ class Survey(models.Model):
     def get_description(self):
         return self.description
 
-    @MWT(MWT_TIMEOUT)
     def get_community(self):
         return self.community
 
