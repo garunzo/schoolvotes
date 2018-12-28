@@ -15,7 +15,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout, authenticate, login
-from .models import Community, Survey, Question, Response, ResponseVote, SurveyVoter
+from .models import Community, Survey, Question, Response, Response, SurveyVoter
 from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
 from django import template
@@ -150,11 +150,15 @@ def vote(request):
         # (i.e. has not exceeded number of allowed votes)
         response = False
         status = False
+        community = None
+        surveys = None
         if len(keys) > 0:
             rid = request.POST[keys[0]][1:]
             response = Response.get_response_by_id(rid)
             if response.user_authorized(email):
                 survey = response.get_survey()
+                surveys = community.get_surveys_not_hidden()
+                community = survey.get_community()
                 if survey.is_closed():
                     context = index_context(request)
                     context['message'] = "Sorry. No more voting permitted. Survey closed."
@@ -203,15 +207,18 @@ def vote(request):
 
         context = {
             "username" : username,
+            "email": email,
             "firstname" : request.user.first_name.title(),
-            "community" : None,
+            "community" : community,
             "communities" : Community.get_communities_matching_email(email),
             "message" : message,
+            "surveys" : surveys,
             "is_staff" : is_staff(request.user),
         }
         return render(request, 'votes/index.html', context)
     return redirect('account_login')
 
+                
 def test(request):
     if request.user.is_authenticated:
         username = request.user.username
