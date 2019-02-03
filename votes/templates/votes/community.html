@@ -10,10 +10,11 @@
   <strong> {{ message }} </strong> </br>
   <hr>
   {% endif %}
-<!--
-<img src="{{ community.logo.url }}" alt="community logo"  width="150" height="150"><br/>
-<img src="/media/logos/dailybulletin.jpeg" alt="daily bulleting"><br/>
--->
+{% if community.name == "Santa Monica High School" %}
+	<img src="{{ community.logo.url }}" alt="community logo"  width="150" height="150"><br/>
+	<img src="/media/logos/dailybulletin.jpeg" alt="daily bulleting"><br/>
+{% endif %}
+
    <strong>Surveys for {{ community.name }}</strong>
        {% for survey in surveys %}
          <hr>
