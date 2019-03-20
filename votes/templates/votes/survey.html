@@ -16,31 +16,20 @@
                 {% endif %}
              </font>
              <fieldset id="q{{question.id}}">
-	     <table style="width:100%">
              {% for response in question.get_responses %}
-             <tr>
-		     <td>
-	     <input
+             <input
              {% if question.get_response_limit > 1 %}
              type="checkbox"
              {% else %}
              type="radio"
              {% endif %}
-              value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }}</br>
-		     </td>
-		     <td>
-			      <img src="/media/logos/samohi-sm.jpeg" alt="daily bulleting"> 
-		     </td>
-		     </tr>
+              value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }} <img src="/media/logos/samohi-sm.jpeg" alt="daily bulleting"> </br>
                 <!-- <button onclick="myFunction()">Click me</button></li> -->
              {% endfor %}
              </fieldset>
          {% endfor %}
-</table>
 	<hr>
 	<br/>
         <input class="btn btn-primary" type="submit" value="Submit Votes">
-
-
      </form>
 {% endblock %}
