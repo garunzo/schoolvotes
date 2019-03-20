@@ -23,6 +23,7 @@
              {% else %}
              type="radio"
              {% endif %}
+	      <hr>
               value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }} <img src="/media/logos/samohi-sm.jpeg" alt="daily bulleting"> </br>
                 <!-- <button onclick="myFunction()">Click me</button></li> -->
              {% endfor %}
