@@ -16,7 +16,11 @@
                 {% endif %}
              </font>
              <fieldset id="q{{question.id}}">
+
+<table style="width:100%">
              {% for response in question.get_responses %}
+<tr>
+   <td>
              <input
              {% if question.get_response_limit > 1 %}
              type="checkbox"
@@ -25,11 +29,16 @@
              {% endif %}
               value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }} 
                 {% if response.has_image %}
+   </td>
+   <td>
 		   <img src="{{ response.image_path }}" alt="response image"> 
 		{% endif %}
 		</br>
+   </td>
                 <!-- <button onclick="myFunction()">Click me</button></li> -->
              {% endfor %}
+</tr>
+</table>
              </fieldset>
          {% endfor %}
 	<hr>
