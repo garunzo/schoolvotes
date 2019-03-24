@@ -23,7 +23,11 @@
              {% else %}
              type="radio"
              {% endif %}
-              value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }} <img src="/media/logos/samohi-sm.jpeg" alt="daily bulleting"> </br>
+              value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }} 
+                {% if not (response.image_path and response.image_path.strip) %}
+		   <img src="{{ response.image_path }}" alt="response image"> 
+		{% endif %}
+		</br>
                 <!-- <button onclick="myFunction()">Click me</button></li> -->
              {% endfor %}
              </fieldset>
