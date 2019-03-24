@@ -370,6 +370,9 @@ class Response(models.Model):
     def get_survey(self):
         return self.question.get_survey()
 
+    def get_image_path(self):
+        return self.image_path
+
     @MWT(MWT_TIMEOUT)
     def user_authorized(self, email):
         return self.question.survey.community.email_authorized(email)

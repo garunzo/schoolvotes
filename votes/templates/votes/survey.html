@@ -24,7 +24,7 @@
              type="radio"
              {% endif %}
               value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }} 
-                {% if not (response.image_path and response.image_path.strip) %}
+                {% if not (response.get_image_path and response.get_image_path.strip) %}
 		   <img src="{{ response.image_path }}" alt="response image"> 
 		{% endif %}
 		</br>
