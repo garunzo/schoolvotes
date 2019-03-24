@@ -29,7 +29,7 @@ from django.conf import settings
 
 from .forms import SignUpForm
 
-TEST=True
+TEST=False
 # https://realpython.com/getting-started-with-django-channels/
 
 
