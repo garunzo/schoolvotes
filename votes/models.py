@@ -373,6 +373,10 @@ class Response(models.Model):
     def get_image_path(self):
         return self.image_path
 
+    def has_image(self):
+        is_empty  = self.image_path in (None, '') or not self.image_path.strip()
+        return not is_empty
+
     @MWT(MWT_TIMEOUT)
     def user_authorized(self, email):
         return self.question.survey.community.email_authorized(email)
