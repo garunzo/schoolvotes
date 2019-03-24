@@ -348,6 +348,7 @@ class Response(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     _rank = models.IntegerField(default = 0)
     _text = models.CharField(max_length=80)
+    image_path = models.CharField(max_length=160, null=False, blank=True, default="")
 
     def __str__(self):
         return f"Survey: {self.question.survey.description}, Rank: {self.rank()}, Question: {self.question.text()}, Response: {self.text()}"
