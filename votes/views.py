@@ -305,6 +305,17 @@ def room(request, room_name):
 def is_staff(user):
     return user.groups.filter(name='Community Staff').exists()
 
+def dump_votes(request):
+    if request.user.is_authenticated and is_staff(request.user):
+        f = open("votes_validation.txt", "wt")
+        for response_vote in ResponseVote.object.all():
+            f.write(response_vote)
+        f.close()
+        return render(request, 'votes/index.html', context)
+    return redirect('account_login')
+        
+        
+
 def suggestion(request):
     if request.user.is_authenticated:
         email = request.user.email
