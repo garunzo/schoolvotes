@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}School Votes{% endblock %}
+{% block sidenav %}
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  Thank you for your interest in our annual Senior Battle Royale, {{ firstname }}!
+  <hr>
+  <form action="{% url 'br_mail' %}" method="post">
+     {% csrf_token %}
+
+ <textarea name="phonenumber" rows="3" cols="30" placeholder="Enter your first and last name, and your phone number here (Format: XXX-XXX-XXXX)"></textarea>
+</br>
+ <input class="btn btn-primary" type="submit">
+  </form>
+   <hr>
+</div>
+{% endblock %}

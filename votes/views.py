@@ -218,7 +218,7 @@ def vote(request):
         return render(request, 'votes/community.html', context)
     return redirect('account_login')
 
-                
+
 def test(request):
     if request.user.is_authenticated:
         username = request.user.username
@@ -313,8 +313,8 @@ def dump_votes(request):
         f.close()
         return render(request, 'votes/index.html', context)
     return redirect('account_login')
-        
-        
+
+
 
 def suggestion(request):
     if request.user.is_authenticated:
@@ -358,6 +358,44 @@ def mail(request):
         subject = "Community Suggestion"
         prologue = request.user.username + " from community web site suggests '"
         message = prologue + request.POST['message'] + "'"
+        from_mail = 'fcbboardingpass@gmail.com'
+        to = ['luca.a.cotter@gmail.com']
+        password =  os.environ.get("MAIL_ACCOUNT_PWD", '')
+        auth_user = 'boardingpassfcb@gmail.com'
+        send_mail(subject, message, from_mail, to, fail_silently=False,
+                  auth_user = auth_user, auth_password=password)
+        return render(request, 'votes/index.html', context)
+    return redirect('account_login')
+
+def battleroyale(request):
+    if request.user.is_authenticated:
+        email = request.user.email
+        context = {
+            "username" : request.user.username,
+            "firstname" : request.user.first_name.title(),
+            "is_staff" : is_staff(request.user),
+            "communities" : Community.get_communities_matching_email(email),
+        }
+        return render(request, 'votes/battleroyale.html', context)
+    return redirect('account_login')
+
+def br_mail(request):
+    if request.user.is_authenticated and request.method == 'POST':
+        email = request.user.email
+        firstname = request.user.first_name
+        lastname = request.user.last_name
+        context = {
+            "username" : request.user.username,
+            "firstname" : request.user.first_name.title(),
+            "is_staff" : is_staff(request.user),
+            "community" : None,
+            "communities" : Community.get_communities_matching_email(email),
+            "phonenumber" : "Text @samofight to 81010",
+            "is_staff" : is_staff(request.user),
+        }
+        subject = "Community Battle Royale"
+        prologue = firstname + " " + lastname + " from school votes wants to join the Senior Battle Royale: \n'"
+        phonenumber = prologue + request.POST['phonenumber'] + "'"
         from_mail = 'fcbboardingpass@gmail.com'
         to = ['luca.a.cotter@gmail.com']
         password =  os.environ.get("MAIL_ACCOUNT_PWD", '')
