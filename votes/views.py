@@ -15,7 +15,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout, authenticate, login
-from .models import Community, Survey, Question, Response, Response, SurveyVoter
+from .models import Community, Survey, Question, Response, Response, SurveyVoter, ResponseVote
 from django.utils.safestring import mark_safe
 from django.core.mail import send_mail
 from django import template
@@ -307,14 +307,11 @@ def is_staff(user):
 
 def dump_votes(request):
     if request.user.is_authenticated and is_staff(request.user):
-        f = open("votes_validation.txt", "wt")
-        for response_vote in ResponseVote.object.all():
-            f.write(response_vote)
+        f = open("votes_validation.txt", "wt", buffering=1)
+        ResponseVote.dump_votes(f)
         f.close()
-        return render(request, 'votes/index.html', context)
+        return redirect('index')
     return redirect('account_login')
-
-
 
 def suggestion(request):
     if request.user.is_authenticated:
