@@ -398,7 +398,7 @@ def br_mail(request):
         to = ['luca.a.cotter@gmail.com']
         password =  os.environ.get("MAIL_ACCOUNT_PWD", '')
         auth_user = 'boardingpassfcb@gmail.com'
-        send_mail(subject, message, from_mail, to, fail_silently=False,
+        send_mail(subject, phonenumber, from_mail, to, fail_silently=False,
                   auth_user = auth_user, auth_password=password)
         return render(request, 'votes/index.html', context)
     return redirect('account_login')
