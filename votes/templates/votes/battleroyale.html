@@ -10,7 +10,10 @@
   <form action="{% url 'br_mail' %}" method="post">
      {% csrf_token %}
 
- <textarea name="phonenumber" rows="3" cols="30" placeholder="Enter your first and last name, and your phone number here (Format: XXX-XXX-XXXX)"></textarea>
+ <!-- <textarea name="phonenumber" rows="3" cols="30" placeholder="Enter your first and last name, and your phone number here (Format: XXX-XXX-XXXX)"></textarea> -->
+<input type="tel" name="phonenumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+
+
 </br>
  <input class="btn btn-primary" type="submit">
   </form>
