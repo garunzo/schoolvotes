@@ -39,6 +39,8 @@ urlpatterns = [
     path('test', views.test, name='test'),
     path('test/<int:id>', views.test, name='test-selection'),
     path('suggestion', views.suggestion, name='suggestion'),
+    path('br_mail', views.suggestion, name='br_mail'),
+
     path('mail', views.mail, name='mail'),
     path('contact_mail', views.contact_mail, name='contact_mail'),
 
