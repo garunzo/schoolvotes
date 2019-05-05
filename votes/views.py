@@ -393,14 +393,18 @@ def br_mail(request):
         }
         subject = "Community Battle Royale"
         prologue = firstname + " " + lastname + " from school votes wants to join the Senior Battle Royale: \n'"
-        phonenumber = prologue + request.POST['phonenumber'] + "'"
-        from_mail = 'fcbboardingpass@gmail.com'
-        to = ['luca.a.cotter@gmail.com']
-        password =  os.environ.get("MAIL_ACCOUNT_PWD", '')
-        auth_user = 'boardingpassfcb@gmail.com'
-        send_mail(subject, phonenumber, from_mail, to, fail_silently=False,
-                  auth_user = auth_user, auth_password=password)
-        return render(request, 'votes/index.html', context)
+        if 'phonenumber' in request.POST:
+            phonenumber = prologue + request.POST['phonenumber'] + "'"
+            from_mail = 'fcbboardingpass@gmail.com'
+            to = ['luca.a.cotter@gmail.com']
+            password =  os.environ.get("MAIL_ACCOUNT_PWD", '')
+            auth_user = 'boardingpassfcb@gmail.com'
+            send_mail(subject, phonenumber, from_mail, to, fail_silently=False,
+                      auth_user = auth_user, auth_password=password)
+            return render(request, 'votes/index.html', context)
+        else:
+            context["message"] = "You did not agree to the terms, so you are not enrolled."
+            return render(request, 'votes/index.html', context)
     return redirect('account_login')
 
 def contact_mail(request):
