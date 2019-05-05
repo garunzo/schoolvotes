@@ -16,6 +16,7 @@ from django.db import transaction
 from operator import itemgetter
 from django.utils import timezone
 from django.utils.timezone import localtime
+import gc
 
 
 import datetime
@@ -395,6 +396,63 @@ class ResponseVote(models.Model):
     response = models.ForeignKey(Response, on_delete=models.CASCADE)
     username = models.CharField(max_length=64)
     email = models.CharField(max_length=254, null=True, blank=False)
+
+    @staticmethod
+    def batch_qs(qs, batch_size=1000):
+        """
+        Returns a (start, end, total, queryset) tuple for each batch in the given
+        queryset.
+    
+        Usage:
+            # Make sure to order your querset
+            article_qs = Article.objects.order_by('id')
+            for start, end, total, qs in batch_qs(article_qs):
+                print "Now processing %s - %s of %s" % (start + 1, end, total)
+                for article in qs:
+                    print article.body
+        """
+        total = qs.count()
+        for start in range(0, total, batch_size):
+            end = min(start + batch_size, total)
+            yield (start, end, total, qs[start:end])
+            gc.collect()
+
+    @staticmethod
+    def queryset_iterator(queryset, chunksize=1000):
+        pk = 0
+        last_pk = queryset.order_by('-pk')[0].pk
+        queryset = queryset.order_by('pk')
+        while pk < last_pk:
+            for row in queryset.filter(pk__gt=pk)[:chunksize]:
+                pk = row.pk
+                yield row
+            gc.collect()
+
+    @staticmethod
+    def dump_votes1(f):
+        response_vote_qs = ResponseVote.objects.order_by('id')
+        for start, end, total, qs in ResponseVote.batch_qs(response_vote_qs):
+            for rv in qs:
+                f.write(str(rv.csv_record()))
+        return
+
+    @staticmethod
+    def dump_votes2(f):
+        for rv in ResponseVote.queryset_iterator(ResponseVote.objects.all()):
+            f.write(str(rv.csv_record())+"\n")
+            f.flush()
+        return 
+
+    @staticmethod
+    def dump_votes(f):
+        for rv in ResponseVote.objects.order_by('id').all()[10000:15000]:
+            f.write(str(rv.csv_record()))
+            f.flush()
+        return
+
+    def csv_record(self):
+        csv = str(self.id) + ", '" + self.response.question.survey.description + "', '" + self.response.question.text() + "', '" + self.response.text() + "', '" + self.username + "', '" + str(self.email) + "'\n"
+        return csv
 
     def __str__(self):
         return f"Survey: {self.response.question.survey.description}, QText: {self.response.question.text()}, Response Voted: {self.response.text()}, Voter Username: {self.username}, Email: {self.email}"
