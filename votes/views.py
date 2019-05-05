@@ -388,7 +388,7 @@ def br_mail(request):
             "community" : None,
             "communities" : Community.get_communities_matching_email(email),
             "is_staff" : is_staff(request.user),
-            "message" : "Text @samofight to 81010!",
+            "message" : "You will be notified soon!",
 
         }
         subject = "Community Battle Royale"
