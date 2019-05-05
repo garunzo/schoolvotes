@@ -387,8 +387,9 @@ def br_mail(request):
             "is_staff" : is_staff(request.user),
             "community" : None,
             "communities" : Community.get_communities_matching_email(email),
-            "phonenumber" : "Text @samofight to 81010",
             "is_staff" : is_staff(request.user),
+            "message" : "Text @samofight to 81010!",
+
         }
         subject = "Community Battle Royale"
         prologue = firstname + " " + lastname + " from school votes wants to join the Senior Battle Royale: \n'"
