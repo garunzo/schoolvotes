@@ -388,7 +388,7 @@ def br_mail(request):
             "community" : None,
             "communities" : Community.get_communities_matching_email(email),
             "is_staff" : is_staff(request.user),
-            "message" : "You will be notified soon!",
+            "message" : "Thanks for join! Be sure to text @samofight to 81010 to join the Remind!",
 
         }
         subject = "Community Battle Royale"
