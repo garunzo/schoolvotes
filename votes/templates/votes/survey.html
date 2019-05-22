@@ -12,7 +12,7 @@
              <hr>
              <font color="blue">{{ question.text }}
                 {% if question.get_response_limit > 1 %}
-                (Select up to {{ question.get_response_limit }})
+                (Select {{ question.get_response_limit }})
                 {% endif %}
              </font>
              <fieldset id="q{{question.id}}">
@@ -27,11 +27,11 @@
              {% else %}
              type="radio"
              {% endif %}
-              value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }} 
+              value="r{{response.id}}" name="q{{question.id}}"> {{ response.text }}
                 {% if response.has_image %}
    </td>
    <td>
-		   <img src="{{ response.image_path }}" alt="response image"> 
+		   <img src="{{ response.image_path }}" alt="response image">
 		{% endif %}
 		</br>
    </td>
