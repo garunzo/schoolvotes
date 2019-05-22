@@ -29,11 +29,11 @@ MWT_TIMEOUT_SURVEY_OPEN = 10
 
 # Create your models here.
 class Community(models.Model):
-    cid = models.CharField(max_length=64)
-    name = models.CharField(max_length=64)
+    cid = models.CharField(max_length=64, help_text='max chars = 64')
+    name = models.CharField(max_length=64, help_text='max chars = 64')
     # https://coderwall.com/p/bz0sng/simple-django-image-upload-to-model-imagefield
     logo = models.ImageField(upload_to = 'logos', default = 'logos/no-img.jpg')
-    emails = models.CharField(max_length=2048, blank=True, default='')
+    emails = models.CharField(max_length=2048, blank=True, default='', help_text='max chars = 2048')
 
     class Meta:
         verbose_name_plural = "Communities"
