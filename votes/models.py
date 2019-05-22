@@ -33,7 +33,7 @@ class Community(models.Model):
     name = models.CharField(max_length=64)
     # https://coderwall.com/p/bz0sng/simple-django-image-upload-to-model-imagefield
     logo = models.ImageField(upload_to = 'logos', default = 'logos/no-img.jpg')
-    emails = models.CharField(max_length=254, blank=True, default='')
+    emails = models.CharField(max_length=2048, blank=True, default='')
 
     class Meta:
         verbose_name_plural = "Communities"
@@ -289,7 +289,7 @@ class SurveyVoter(models.Model):
 class Question(models.Model):
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
     _rank = models.IntegerField(default=0)
-    _text = models.CharField(max_length=80)
+    _text = models.CharField(max_length=256)
     response_limit = models.IntegerField(default=1)
 
     def __str__(self):
