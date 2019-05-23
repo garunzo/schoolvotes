@@ -1,0 +1,16 @@
+# Connect with server
+psql -h schoolvotes.crfmfmw2lj5n.us-east-2.rds.amazonaws.com -U schoolvotesadmin schoolvotesdb
+
+psql "dbname=schoolvotesdb host=schoolvotes.crfmfmw2lj5n.us-east-2.rds.amazonaws.com user=schoolvotesadmin password=kev-wx8-8JN-FpF port=5432 sslmode=require"
+
+select * from votes_responsevote as r where question_id=45 INNER join votes_response on r.response_id = votes_response.id
+
+select * from votes_responsevote as r INNER join votes_response on r.response_id = votes_response.id where r.question_id=45;
+
+
+ id   |   username    |      email      | question_id | response_id | id  | _rank |             _text              | question_
+id | image_path 
+
+
+select username, email, _text from votes_responsevote as r INNER join votes_response on r.response_id = votes_response.id where r.question_id=45;
+select username, email, _text from votes_responsevote as r INNER join votes_response on r.response_id = votes_response.id where r.question_id=45;
