@@ -33,7 +33,6 @@ TEST=False
 # https://realpython.com/getting-started-with-django-channels/
 
 
-
 # Create your views here. New view
 def index(request):
     if request.user.is_authenticated:
@@ -311,6 +310,19 @@ def dump_votes(request):
         ResponseVote.dump_votes(f)
         f.close()
         return redirect('index')
+    return redirect('account_login')
+
+def load_responses(request):
+    if request.user.is_authenticated and is_staff(request.user):
+        f = open("responses.txt", "r")
+        q = Question.get_question_by_id("54")
+        response_rank = 0
+        for name in f:
+#            q.add_response(response_rank, name.strip())
+            response_rank += 1
+        f.close()
+        context = index_context(request)
+        return render(request, 'votes/index.html', context)
     return redirect('account_login')
 
 def suggestion(request):

@@ -293,9 +293,9 @@ class Question(models.Model):
     response_limit = models.IntegerField(default=1)
 
     def __str__(self):
-        # return f"Survey: {self.survey.description}, Rank: {self.rank}, Question Text: {self.text}"
+        # return f"Survey: {self.survey.description}, Rank: {self.rank}, Question Text: {self.text}, id: {self.id}"
 
-        return f"Survey: , Rank: {self.rank()}, Question Text: {self.text()}"
+        return f"Survey: , Rank: {self.rank()}, Question Text: {self.text()}, qid: {self.id}"
 
     @MWT(MWT_TIMEOUT)
     def get_responses(self):

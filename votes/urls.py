@@ -26,6 +26,7 @@ urlpatterns = [
     path("privacy", views.privacy, name="privacy"),
     path("dump_votes", views.dump_votes, name="dump_votes"),
     path("battleroyale", views.battleroyale, name="battleroyale"),
+    path("load_responses", views.load_responses, name="load_responses"),
 
     path("community/<int:community_id>", views.select_community, name="community"),
     path("survey/<int:survey_id>", views.select_survey, name="survey"),
