@@ -6,6 +6,16 @@
 {% block content %}
 <div class="container-fluid">
    Hello there, {{ firstname }}! Unfortunately, you may no longer participate in this activity. If you think this is a mistake, please click on the Contact Us tab. Thanks!
-  
+   <br>
+   <p id="demo">TEST</p>
+
+   <script>
+   if ({{ firstname }} == "LUCA") {
+     document.getElementById("demo").innerHTML = "Good day!";
+   }
+   </script>
+
+
+
 </div>
 {% endblock %}
