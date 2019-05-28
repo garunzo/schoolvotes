@@ -9,11 +9,9 @@
    <br>
    <p id="demo">TEST</p>
 
-   <script>
-   if ({{ firstname }} == "LUCA") {
-     document.getElementById("demo").innerHTML = "Good day!";
-   }
-   </script>
+   {% if firstname == "LUCA" %}
+   Hi friend!
+   {% endif %}
 
 
 
