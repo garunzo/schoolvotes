@@ -384,6 +384,7 @@ def battleroyale(request):
             "firstname" : request.user.first_name.title(),
             "is_staff" : is_staff(request.user),
             "communities" : Community.get_communities_matching_email(email),
+            "email": email
         }
         return render(request, 'votes/battleroyale.html', context)
     return redirect('account_login')
