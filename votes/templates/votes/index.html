@@ -16,13 +16,16 @@
        {% if communities %}
           <ul>
              {% for community in communities %}
-                <li> <a href="{% url 'community' community_id=community.id %}"><span class="myfont-scaling-med">{{ community.get_name }}</span></a>
-                </li>
+               {% if community.get_name == "SAMOHI Senior Battle Royale"}
+                  <a href="harvardssp.html">SAMOHI Senior Battle Royale</a>
+               {% else %}
+                  <li> <a href="{% url 'community' community_id=community.id %}"><span class="myfont-scaling-med">{{ community.get_name }}</span></a>
+                  </li>
              {% endfor %}
           </ul>
              <span class="myfont-scaling-sm">If you don't see your school, please make sure you logged in with your school email address. For example: abc@smmk12.org. To do so, you may have to open a new private window or clear history.</span>
        {% else %}
-        You are not authorized for any schools with the email address you used: {{ email }}. <br/> 
+        You are not authorized for any schools with the email address you used: {{ email }}. <br/>
 Please make sure that you have signed in with your school email. For example: abc@smmk12.org. To do so, you may have to open a new private window or clear history.
        {% endif %}
        <hr>
