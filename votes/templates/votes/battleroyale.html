@@ -5,8 +5,6 @@
 {% endblock %}
 {% block content %}
 <div class="container-fluid">
-   <!-- Hello there, {{ firstname }}! Unfortunately, you may no longer participate in this activity. If you think this is a mistake, please click on the Contact Us tab. Thanks! -->
-   <br>
 
    {% if email == "lac@smmk12.org" %}
    <p>Your initial target is: CORY GREWOHL<p/>
@@ -112,7 +110,8 @@
    <p>Your initial target is: MATTHEW SALERNO<p/>
    {% elif email == "afw@smmk12.org" %}
    <p>Your initial target is: CAROLINE LOMONACO<p/>
-
+   {% else %}
+   <p>Hello there! Unfortunately, you may no longer participate in this activity. If you think this is a mistake, please click on the Contact Us tab. Thanks!<p>
 
    {% endif %}
 
