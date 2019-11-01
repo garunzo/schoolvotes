@@ -312,16 +312,21 @@ def dump_votes(request):
         return redirect('index')
     return redirect('account_login')
 
-def load_responses(request):
+def load_responses(request, qid):
     if request.user.is_authenticated and is_staff(request.user):
-        f = open("responses.txt", "r")
-        q = Question.get_question_by_id("54")
-        response_rank = 0
-        for name in f:
-#            q.add_response(response_rank, name.strip())
-            response_rank += 1
-        f.close()
+        q = Question.get_question_by_id(str(qid))
         context = index_context(request)
+        # suspend
+        if False:
+            f = open("responses.txt", "r")
+            response_rank = 0
+            for name in f:
+                q.add_response(response_rank, name.strip())
+                response_rank += 1
+            f.close()
+            context['message'] = str(response_rank) + " responses loaded from file."
+        else:
+            context['message'] = "Question id " + str(qid) + " not found."
         return render(request, 'votes/index.html', context)
     return redirect('account_login')
 
