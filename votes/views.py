@@ -317,7 +317,7 @@ def load_responses(request, qid):
         q = Question.get_question_by_id(str(qid))
         context = index_context(request)
         # suspend
-        if False:
+        if True:
             f = open("responses.txt", "r")
             response_rank = 0
             for name in f:
